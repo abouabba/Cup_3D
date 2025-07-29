@@ -7,10 +7,50 @@
 # include <unistd.h>
 # include <string.h>
 # include <limits.h>
+# include "mlx.h"
+# include <math.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42 
 #endif
+
+# define FOV 60.0 * (M_PI / 180)
+# define ROTATE_SPEED 3
+# define KEY_W 13      // W
+# define KEY_S 1       // S
+# define KEY_A 0       // A
+# define KEY_D 2       // D
+# define ESC 53        // Escape
+
+# define SCREEN_WIDTH 1048
+# define SCREEN_HEIGHT 640
+
+# define UP 126        // Up arrow
+# define DOWN 125      // Down arrow
+# define RIGHT 124     // Right arrow
+# define LEFT 123      // Left arrow
+# define TILE_P 3
+# define TILE_SIZE 30
+# define TWO_PI 6.28318530718
+
+
+
+# define EAST_TEXTURE 0
+# define WEST_TEXTURE 2
+# define SOUTH_TEXTURE 3
+# define NORTH_TEXTURE 1
+
+typedef struct s_txtu
+{
+	void	*txture_p;
+	void	*data_add;
+	int		bbp;
+	int		endian;
+	int		width;
+	int		height;
+	int		line_len;
+}	t_txtu;
+
 
 typedef struct s_textures {
 	char	*north;
@@ -22,6 +62,8 @@ typedef struct s_textures {
 typedef struct s_player {
 	int		x;
 	int		y;
+	int		move;
+	int		c_count;
 	char	direction;
 }	t_player;
 
@@ -30,8 +72,43 @@ typedef struct s_line {
 	struct s_line	*next;
 }	t_line;
 
-typedef struct s_game {
+
+typedef struct s_ray
+{
+    double ray_x;
+    double ray_y;
+    double ray_angle; // allready exist
+    double ray_dir_x;
+    double ray_dir_y;
+    double delta_dist_x;
+    double delta_dist_y;
+    int map_x;
+    int map_y;
+	double perp_wall_dist;
+	double hit_x;
+	double hit_y;
+	double side;
+} t_ray;
+
+typedef  struct s_mlx
+{
+	void	*mlx;
+	void	*win;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+}		t_mlx;
+
+
+typedef struct s_game 
+{
+	t_txtu		txtu[4];
 	t_textures	textures;
+	char		**txt;
+	t_mlx		*helper;
+	double 		angle;
 	int			no;
 	int			so;
 	int			we;
@@ -73,12 +150,20 @@ size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(char *s, int c);
-int	ft_atoi(const char	*str);
-int	ft_isdigit(int c);
+int		ft_atoi(const char	*str);
+int		ft_isdigit(int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+
+//reyn's part
+void 	init_game(t_game *game);
+int 	close_window(t_game *game);
+int 	render_map(t_game *game);
+void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
+int 	bottoms(int keycode, t_game *game);
+void    the_3dview(t_game *game);
 
 #endif
