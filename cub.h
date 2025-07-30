@@ -35,10 +35,10 @@
 
 
 
-# define EAST_TEXTURE 0
-# define WEST_TEXTURE 2
-# define SOUTH_TEXTURE 3
-# define NORTH_TEXTURE 1
+# define EAST_TEXTURE 3
+# define WEST_TEXTURE 1
+# define SOUTH_TEXTURE 2
+# define NORTH_TEXTURE 0
 
 typedef struct s_txtu
 {

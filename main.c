@@ -1,4 +1,4 @@
-#include "cub.h"
+ #include "cub.h"
 
 void	is_valid_texture(t_game *game)
 {
