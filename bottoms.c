@@ -61,13 +61,13 @@ int bottoms(int keycode, t_game *game)
 	    game->angle -= ROTATION_SPEED;
 	else if (keycode == RIGHT)
 	    game->angle += ROTATION_SPEED;
-	if (keycode == KEY_W )
+	if ( keycode == KEY_D)
 		move_player(game, 0, -1);
-	else if (keycode == KEY_S)
+	else if (keycode == KEY_W )
 		move_player(game, 0, 1);
 	else if (keycode == KEY_A)
 		move_player(game, -1, 0);
-	else if (keycode == KEY_D)
+	else if (keycode == KEY_S )
 		move_player(game, 1, 0);
 	else if (keycode == 65307)
 		exit(0);

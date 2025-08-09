@@ -86,5 +86,3 @@ int  render_map(t_game *game)
     mlx_put_image_to_window(game->helper->mlx, game->helper->win, game->helper->img, 0, 0);
     return (1);
 }
-
-

@@ -126,6 +126,17 @@ typedef struct s_game
 	t_player	player;
 }	t_game;
 
+typedef struct s_casting
+{
+	double 	dist;
+    int     hited;
+    int     side;
+    double  side_dist_x;
+    double  side_dist_y;
+    int     step_x;
+    int     step_y;
+}   t_casting;  
+
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
 void	init_game_struct(t_game *game);
@@ -136,9 +147,9 @@ void	parse_config_line(t_game *game, char *line);
 void	save_map_line(t_game *game, char *line);
 int		in_valid_ber_file(char *file_name);
 void	parse_config_line(t_game *game, char *line);
-int	parse_color(char *line);
+int		parse_color(char *line);
 void    finalize_map(t_game *game);
-void print_map(char **map);
+void 	print_map(char **map);
 void	validate_map(t_game *game);
 void	print_error(const char *message);
 

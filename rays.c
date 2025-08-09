@@ -1,71 +1,62 @@
 #include "cub.h"
 
-typedef struct s_casting
-{
-    int     hited;
-    int     side;
-    double  side_dist_x;
-    double  side_dist_y;
-    int     step_x;
-    int     step_y;
-}   t_casting;  
 
-t_casting    loop_helper(t_game *game, t_ray *ray, t_casting holder)
+t_casting    *loop_helper(t_game *game, t_ray *ray, t_casting *holder)
 {
-    holder.hited = 0;
-    while (!holder.hited)
+    holder->hited = 0;
+    while (!holder->hited)
     {
-        if (holder.side_dist_x < holder.side_dist_y)
+        if (holder->side_dist_x < holder->side_dist_y)
         {
-            holder.side_dist_x += ray->delta_dist_x;
-            ray->map_x += holder.step_x;
-            holder.side = 0;
+            holder->side_dist_x += ray->delta_dist_x;
+            ray->map_x += holder->step_x;
+            holder->side = 0;
         }
         else
         {
-            holder.side_dist_y += ray->delta_dist_y;
-            ray->map_y += holder.step_y;
-            holder.side = 1;
+            holder->side_dist_y += ray->delta_dist_y;
+            ray->map_y += holder->step_y;
+            holder->side = 1;
         }
         if (game->map[ray->map_y][ray->map_x] == '1')
-            holder.hited = 1;
+            holder->hited = 1;
     }
     return (holder);
 }
 
-double cast_dda(t_game *game, t_ray *ray, t_casting holder)
+double cast_dda(t_game *game, t_ray *ray, t_casting *holder)
 {
     double dist_to_wall;
 
     if (ray->ray_dir_x < 0)
     {
-        holder.step_x = -1;
-        holder.side_dist_x = (ray->ray_x / TILE_SIZE - ray->map_x) * ray->delta_dist_x;
+        holder->step_x = -1;
+        holder->side_dist_x = (ray->ray_x / TILE_SIZE - ray->map_x) * ray->delta_dist_x;
     }
     else
     {
-        holder.step_x = 1;
-        holder.side_dist_x = (ray->map_x + 1.0 - ray->ray_x / TILE_SIZE) * ray->delta_dist_x;
+        holder->step_x = 1;
+        holder->side_dist_x = (ray->map_x + 1.0 - ray->ray_x / TILE_SIZE) * ray->delta_dist_x;
     }
     if (ray->ray_dir_y < 0)
     {
-        holder.step_y = -1;
-        holder.side_dist_y = (ray->ray_y / TILE_SIZE - ray->map_y) * ray->delta_dist_y;
+        holder->step_y = -1;
+        holder->side_dist_y = (ray->ray_y / TILE_SIZE - ray->map_y) * ray->delta_dist_y;
     }
     else
     {
-        holder.step_y = 1;
-        holder.side_dist_y = (ray->map_y + 1.0 - ray->ray_y / TILE_SIZE) * ray->delta_dist_y;
+        holder->step_y = 1;
+        holder->side_dist_y = (ray->map_y + 1.0 - ray->ray_y / TILE_SIZE) * ray->delta_dist_y;
     }
     
     holder = loop_helper(game, ray, holder);
-    if (holder.side == 0)
-        dist_to_wall = (ray->map_x * TILE_SIZE - ray->ray_x + (1 - holder.step_x) * TILE_SIZE / 2) / ray->ray_dir_x;
+    if (holder->side == 0)
+        dist_to_wall = (ray->map_x * TILE_SIZE - ray->ray_x + (1 - holder->step_x) * TILE_SIZE / 2) / ray->ray_dir_x;
     else
-        dist_to_wall = (ray->map_y * TILE_SIZE - ray->ray_y + (1 - holder.step_y) * TILE_SIZE / 2) / ray->ray_dir_y;
+        dist_to_wall = (ray->map_y * TILE_SIZE - ray->ray_y + (1 - holder->step_y) * TILE_SIZE / 2) / ray->ray_dir_y;
 
     ray->perp_wall_dist = dist_to_wall;
-    ray->side = holder.side;
+    ray->side = holder->side;
     ray->hit_x = ray->ray_x + ray->ray_dir_x * dist_to_wall;
     ray->hit_y = ray->ray_y + ray->ray_dir_y * dist_to_wall;
 
@@ -74,6 +65,7 @@ double cast_dda(t_game *game, t_ray *ray, t_casting holder)
 
 void	draw_vertical_line(t_game *game, int x, int start, int end, int color)
 {
+    (void)game;
 	if (x < 0 || x >= SCREEN_WIDTH)
     {
         printf("this is x: %d, start: %d, end: %d \n", x, start, end);
@@ -167,31 +159,7 @@ double cast_ray(t_game *game, t_ray *ray, int ray_id)
     ray->hit_x = ray->ray_x + ray->ray_dir_x * perp_wall_dist;
     ray->hit_y = ray->ray_y + ray->ray_dir_y * perp_wall_dist;
 
-    // You can now use ray->hit_x and ray->hit_y to draw your ray line or walls
-    // double start_x = game->player.x * TILE_SIZE + TILE_SIZE / 2;
-    // double start_y = game->player.y * TILE_SIZE + TILE_SIZE / 2;
 
-    // double end_x = ray->hit_x;
-    // double end_y = ray->hit_y;
-    // (void)ray_id;
-
-    // printf("hit x and y (tiles):     (%f, %f)\n", ray->hit_x, ray->hit_y);
-    // printf("\n=========== RAYCAST DEBUG INFO ===========\n");
-    // printf("Player Position (pixels):   (%.2f, %.2f)\n", start_x, start_y);
-    // printf("Ray Start (pixels):         (%.2f, %.2f)\n", ray->ray_x, ray->ray_y);
-    // printf("Ray Direction:              (%.5f, %.5f)\n", ray->ray_dir_x, ray->ray_dir_y);
-    // printf("Tile Map Position:          (%d, %d)\n", ray->map_x, ray->map_y);
-    // printf("Step Direction:             (step_x = %d, step_y = %d)\n", (ray->ray_dir_x < 0 ? -1 : 1), (ray->ray_dir_y < 0 ? -1 : 1));
-    // printf("Delta Distances:            (dx = %.5f, dy = %.5f)\n", ray->delta_dist_x, ray->delta_dist_y);
-    // printf("Initial Side Distances:     (side_dx = %.5f, side_dy = %.5f)\n", side_dist_x, side_dist_y);
-    // printf("Wall Hit Side:              %s\n", ray->side == 0 ? "Vertical (X)" : "Horizontal (Y)");
-    // printf("Perpendicular Wall Dist:    %.5f\n", ray->perp_wall_dist);
-    // printf("Hit Position (pixels):      (%.2f, %.2f)\n", ray->hit_x, ray->hit_y);
-    // printf("==========================================\n\n");
-    // sleep(1);
-    // draw_ray_line(game, start_x, start_y, end_x, end_y, 0xFF0000);
-    // draw_vertical_line(game, ray_id, perp_wall_dist, side);
-    
     return perp_wall_dist;
 }
 
@@ -226,234 +194,113 @@ t_ray    prepare_vars(t_ray ray, t_game *game, int i_loop)
     return ray;
 }
 
-// void texture_pass(t_game *game, int screen_x, int draw_start, int draw_end, t_ray ray, t_casting holder, t_txtu *texture)
-// {
-//     double wall_x;
-//     if (holder.side == 0)
-//         wall_x = game->player.y + ray.perp_wall_dist * ray.ray_dir_y;
-//     else
-//         wall_x = game->player.x + ray.perp_wall_dist * ray.ray_dir_x;
-//     wall_x -= floor(wall_x);
-//     // texture x position
-//     int tex_x = (int)(wall_x * (double)(texture->width));
-//     if ((holder.side == 0 && ray.ray_dir_x < 0) || (holder.side == 1 && ray.ray_dir_y > 0))
-//         tex_x = texture->width - tex_x - 1;
 
-//     int line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / ray.perp_wall_dist);
-//     double step = 1.0 * texture->height / line_height;
-//     // double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-//     double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-
-
-//     for (int y = draw_start; y < draw_end; y++)
-//     {
-//         int tex_y = (int)tex_pos % texture->height;
-
-
-
-//         char *pixel = texture->data_add + (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-//         int color = *(int *)pixel;
-
-//         my_mlx_pixel_put(game, screen_x, y, color); // Make sure this exists
-//     }
-// }
-
-
-// void texture_pass(t_game *game, int screen_x, int draw_start, int draw_end,
-//                   t_ray ray, t_casting holder, t_txtu *texture, int line_height)
-// {
-
-//     // double wall_x;
-//     // if (ray.side == 0)
-//     //     wall_x = ray.ray_y - floor(ray.ray_y); // hit vertical wall
-//     // else
-//     //     wall_x = ray.ray_x - floor(ray.ray_x);
-//     // printf("Ray hit at X: %f | Y: %f\n", ray.ray_x, ray.ray_y);
-//     // printf("\n--- Texture Debug ---\n");
-//     // printf("Screen column (x): %d\n", screen_x);
-//     // printf("Draw start: %d | Draw end: %d\n", draw_start, draw_end);
-//     // printf("Line height: %d\n", line_height);
-//     // printf("Texture width: %d | Texture height: %d\n", texture->width, texture->height);
-//     // printf("Wall hit position (wall_x): %f\n", wall_x);
-
-//     // int tex_x = (int)(wall_x * texture->width);
-//     // if ((holder.side == 0 && ray.ray_dir_x < 0) || (holder.side == 1 && ray.ray_dir_y > 0))
-//     //     tex_x = texture->width - tex_x - 1;
-
-//     // printf("Calculated tex_x: %d\n", tex_x);
-//     // printf("Ray dir X: %f | Ray dir Y: %f\n", ray.ray_dir_x, ray.ray_dir_y);
-//     // printf("Wall side (0=X, 1=Y): %d\n", holder.side);
-
-    
-
-    
-
-    
-
-    
-
-//     // // double step = (double)texture->height / line_height;
-//     // // double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-
-//     // // for (int y = draw_start; y < draw_end; y++)
-//     // // {
-//     // //     int tex_y = (int)tex_pos & (texture->height - 1);
-//     // //     tex_pos += step;
-
-//     // //     char *pixel = texture->data_add + (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-//     // //     int color = *(int *)pixel;
-
-//     // //     my_mlx_pixel_put(game, screen_x , y, color);
-//     // // }
-
-//     // double wall_x;
-//     // if (holder.side == 0)  // or ray.side if you prefer
-//     //     wall_x = ray.ray_y - floor(ray.ray_y); // vertical wall hit
-//     // else
-//     //     wall_x = ray.ray_x - floor(ray.ray_x);
-
-//     // // printf("Ray hit at X: %f | Y: %f\n", ray.ray_x, ray.ray_y);
-//     // // printf("\n--- Texture Debug ---\n");
-//     // // printf("Screen column (x): %d\n", screen_x);
-//     // // printf("Draw start: %d | Draw end: %d\n", draw_start, draw_end);
-//     // // printf("Line height: %d\n", line_height);
-//     // // printf("Texture width: %d | Texture height: %d\n", texture->width, texture->height);
-//     // // printf("Wall hit position (wall_x): %f\n", wall_x);
-
-//     // int tex_x = (int)(wall_x * texture->width);
-//     // if ((holder.side == 0 && ray.ray_dir_x < 0) || (holder.side == 1 && ray.ray_dir_y > 0))
-//     //     tex_x = texture->width - tex_x - 1;
-
-//     // printf("Calculated tex_x: %d\n", tex_x);
-//     // printf("Ray dir X: %f | Ray dir Y: %f\n", ray.ray_dir_x, ray.ray_dir_y);
-//     // printf("Wall side (0=X, 1=Y): %d\n", holder.side);
-
-//     // double step = (double)texture->height / line_height;
-//     // double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-
-//     // for (int y = draw_start; y < draw_end; y++)
-//     // {
-//     //     int tex_y = (int)tex_pos & (texture->height - 1);
-//     //     tex_pos += step;
-
-//     //     char *pixel = texture->data_add+ (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-//     //     int color = *(int *)pixel;
-
-//     //     my_mlx_pixel_put(game, screen_x, y, color);
-//     // }
-
-
-
-
-//     //     // printf("this is the sec_x:%d, drawstart:%d, draw_end:%d ,linelienght :%d\n", screen_x, draw_start, draw_end, line_height);
-
-
-//     tex_x = (int)(wall_x * (double)(texture->width));
-//     if ((ray.side == 0 && ray.ray_dir_x < 0) || (ray.side == 1 && ray.ray_dir_y > 0))
-//         tex_x = texture->width - tex_x - 1;
-
-//     double step = 1.0 * texture->height / line_height;
-//     printf("the texture hight: %d and steps is %f anf this is he line light %d \n", texture->height, step, line_height);
-//     double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-
-//     for (int y = draw_start; y < draw_end; y++)
-//     {
-//         int tex_y = (int)tex_pos;
-//         if (tex_y < 0)
-//             tex_y = 0;
-//         if (tex_y >= texture->height)
-//             tex_y = texture->height - 1;
-    
-//         tex_pos += step;
-    
-//         char *pixel = texture->data_add + (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-//         int color = *(int *)pixel;
-    
-//         my_mlx_pixel_put(game, screen_x, y, color);
-//     }
-// }
-
-
-// void texture_pass(t_game *game, int screen_x, int draw_start, int draw_end, t_ray ray, t_casting holder, t_txtu *texture, int line_height)
+// void texture_pass(t_game *game, int screen_x, int draw_start, int draw_end, t_ray ray, t_casting *holder, t_txtu *texture, int line_height)
 // {
 //     double wall_x;
 //     if (ray.side == 0)
 //         wall_x = (ray.hit_y / TILE_SIZE) - floor(ray.hit_y / TILE_SIZE);
 //     else
 //         wall_x = (ray.hit_x / TILE_SIZE) - floor(ray.hit_x / TILE_SIZE);
+
 //     int tex_width = texture->width;
-//     int tex_x = (int)(wall_x * (double)tex_width);
+//     int tex_x = (int)(wall_x  * (double)tex_width);
+
 //     if ((ray.side == 0 && ray.ray_dir_x > 0) || 
-//     (ray.side == 1 && ray.ray_dir_y < 0))
+//         (ray.side == 1 && ray.ray_dir_y < 0))
 //     {
 //         tex_x = tex_width - tex_x - 1;
 //     }
-//     printf("Texture add: %p\n", texture->data_add);
-//     printf("Texture width: %d\n", tex_width);
-//     printf("wall_x: %.6f\n", wall_x);
-//     printf("tex_x: %d\n", tex_x);
-
-//     int tex_y;
-//     int d;
-//     line_height = draw_end - draw_start;
+//     if (line_height < 1)
+//         line_height = 1;
+//     if (draw_end >= SCREEN_HEIGHT)
+// 		draw_end = SCREEN_HEIGHT - 1;
+//     if (draw_start < 0)
+// 		draw_start = 0;
 //     int tex_height = texture->height;
-//     // Start the texture position
 //     double step = 1.0 * tex_height / line_height;
 //     double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
-
+    
 //     for (int y = draw_start; y < draw_end; y++)
 //     {
-//         tex_y = (int)tex_pos & (tex_height - 1);
+//         int tex_y = (int)tex_pos;
+//         if (tex_y >= tex_height)
+//             tex_y = 0;
 //         tex_pos += step;
 
-//         // Get color from texture pixel
 //         char *pixel = texture->data_add + 
 //                       (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-
 //         int color = *(int *)pixel;
 
-//         // Plot to screen buffer at (x, y)
 //         my_mlx_pixel_put(game, screen_x, y, color);
 //     }
 // }
-void texture_pass(t_game *game, int screen_x, int draw_start, int draw_end, t_ray ray, t_casting holder, t_txtu *texture, int line_height)
+
+// void	texture_pass(t_game *game, int x, int start, int end,
+// 					t_ray ray, t_casting *holder, t_txtu *texture, int line_height)
+// {
+// 	if (x < 0 || x >= SCREEN_WIDTH)
+// 		return;
+
+// 	if (start < 0)
+// 		start = 0;
+// 	if (end >= SCREEN_HEIGHT)
+// 		end = SCREEN_HEIGHT - 1;
+//     double projection_plane_dist = (SCREEN_WIDTH / 2.0) / tan(FOV / 2.0);
+//     double wall_stirp =  TILE_SIZE / ray.perp_wall_dist * projection_plane_dist;
+//     double wall_hight = (int)(SCREEN_HEIGHT / ray.perp_wall_dist);
+//     double wall_top = (SCREEN_HEIGHT /2) - (wall_hight /2);
+//     double wall_bottom = (SCREEN_HEIGHT /2) + (wall_hight /2);
+//     printf("thsi is the data projection_plane_dist:%f   wall_strip:%f   wall_height:%f, wall_top:%f, wall_bottom:%f\n", projection_plane_dist,wall_stirp, wall_hight, wall_top, wall_bottom);
+// }
+void texture_pass(t_game *game, int x, int start, int end,
+                  t_ray ray, t_casting *holder, t_txtu *texture, int line_height)
 {
-    double wall_x;
-    if (ray.side == 0)
-        wall_x = (ray.hit_y / TILE_SIZE) - floor(ray.hit_y / TILE_SIZE);
-    else
-        wall_x = (ray.hit_x / TILE_SIZE) - floor(ray.hit_x / TILE_SIZE);
+    if (x < 0 || x >= SCREEN_WIDTH)
+        return;
+    if (start < 0)
+        start = 0;
+    if (end >= SCREEN_HEIGHT)
+        end = SCREEN_HEIGHT - 1;
 
     int tex_width = texture->width;
-    int tex_x = (int)(wall_x * (double)tex_width);
-
-    if ((ray.side == 0 && ray.ray_dir_x > 0) || 
-        (ray.side == 1 && ray.ray_dir_y < 0))
-    {
-        tex_x = tex_width - tex_x - 1;
-    }
-
-    printf("Texture add: %p\n", texture->data_add);
-    printf("Texture width: %d, height: %d\n", texture->width, texture->height);
-    printf("wall_x: %.6f, tex_x: %d\n", wall_x, tex_x);
-    printf("draw_start: %d, draw_end: %d, line_height: %d\n", draw_start, draw_end, line_height);
-
     int tex_height = texture->height;
-    double step = 1.0 * tex_height / line_height;
-    double tex_pos = (draw_start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
 
-    for (int y = draw_start; y < draw_end; y++)
+    // Determine exact hit location on the wall
+    double wall_x;
+    if (ray.side == 0)
+        wall_x = ray.hit_y / TILE_SIZE - floor(ray.hit_y / TILE_SIZE);
+    else
+        wall_x = ray.hit_x / TILE_SIZE - floor(ray.hit_x / TILE_SIZE);
+
+    int tex_x = (int)(wall_x * tex_width);
+    if ((ray.side == 0 && ray.ray_dir_x > 0) || (ray.side == 1 && ray.ray_dir_y < 0))
+        tex_x = tex_width - tex_x - 1;
+
+    // Step: how much to increase the texture coordinate per screen pixel
+    double step = (double)tex_height / (double)line_height;
+
+    // Starting texture coordinate (shift so middle of wall aligns properly)
+    double tex_pos = (start - SCREEN_HEIGHT / 2 + line_height / 2) * step;
+
+    for (int y = start; y <= end; y++)
     {
         int tex_y = (int)tex_pos;
-        if (tex_y >= tex_height)
+        if (tex_y < 0)
+            tex_y = 0;
+        else if (tex_y >= tex_height)
             tex_y = tex_height - 1;
+
         tex_pos += step;
 
-        char *pixel = texture->data_add + 
-                      (tex_y * texture->line_len + tex_x * (texture->bbp / 8));
-        int color = *(int *)pixel;
+        char *pixel = texture->data_add + tex_y * texture->line_len + tex_x * (texture->bbp / 8);
+        unsigned int color = *(unsigned int *)pixel;
 
-        my_mlx_pixel_put(game, screen_x, y, color);
+        // Shade if side==1 (horizontal wall)
+        if (ray.side == 1)
+            color = (color >> 1) & 0x7F7F7F;
+
+        my_mlx_pixel_put(game, x, y, color);
     }
 }
 
@@ -470,27 +317,29 @@ void    the_3dview(t_game *game)
 {
     t_ray ray;
     int     i_loop;
-    t_casting holder;
+    t_casting *holder;
 
-    holder.hited =0;
-    holder.side =0;
-    holder.side_dist_x =0;
-    holder.side_dist_y =0;
+    holder = malloc(sizeof(t_casting));
+    holder->hited =0;
+    holder->side =0;
+    holder->side_dist_x =0;
+    holder->side_dist_y =0;
     i_loop = 0;
     
     while(i_loop <= SCREEN_WIDTH)
     {
         ray  = prepare_vars(ray, game, i_loop);
-        double distance = cast_dda(game, &ray, holder);
-        // double corrected_distance = distance * cos(ray.ray_angle - game->angle);
-    
+        double dist = cast_dda(game, &ray, holder);
+        double distance = dist * cos(ray.ray_angle - game->angle);
+        ray.perp_wall_dist = distance;
         int line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
-        int draw_start = -line_height / 2 + SCREEN_HEIGHT / 2;
+        int draw_start = - line_height / 2 + SCREEN_HEIGHT / 2;
         int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
         if (draw_start < 0)
             draw_start = 0;
         if (draw_end >= SCREEN_HEIGHT)
             draw_end = SCREEN_HEIGHT - 1;
+
         // holder.side if == 1 is hit the y axess 0 if hited the x axess
         int texture_index;     
         if (ray.side == 0) // vertical wall (X-axis side)
@@ -500,60 +349,20 @@ void    the_3dview(t_game *game)
             else
                 texture_index = WEST_TEXTURE;  // ray moving left
         }
-        else // horizontal wall (Y-axis side)
+        else // horizontal wall (y-axis side)
         {
             if (ray.ray_dir_y > 0)
                 texture_index = SOUTH_TEXTURE; // ray moving down
             else
                 texture_index = NORTH_TEXTURE; // ray moving up
         }
-        // int color = (holder.side == 1) ? 0xAAAAAA : 0xFFFFFF;
-        // printf("this is the sidde :%d (EAST :0 WEST :2 SOUTH :3 NORTH :1) \n", texture_index);
+        int color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
+    
 
-        draw_floor_and_ceiling(game, i_loop , SCREEN_HEIGHT, draw_start, draw_end, 0xFFDFFFF, 0x0000D00);
-
-
+        draw_floor_and_ceiling(game, i_loop , SCREEN_HEIGHT, draw_start, draw_end, 0xFFDFFFF, 0x0A0D00);
         t_txtu *current_texture = &game->txtu[texture_index];
-        printf("this is he side indx :%d\n", texture_index);
+        draw_vertical_line(game, i_loop,draw_start, draw_end, color);
         texture_pass(game, i_loop, draw_start, draw_end, ray, holder, current_texture, line_height);
         i_loop++;
     }
 }
-// int draw_column(t_ray *ray, t_game *game, int x)
-// {
-//     int y;
-//     // int color;
-//     t_img *texture;
-
-//     texture = get_dir_texture(ray, game->textures);
-//     // 3. Sécuriser draw_start / draw_end
-//     if (ray->column.draw_start < 0)
-//         ray->column.draw_start = 0;
-//     if (ray->column.draw_end >= HEIGHT)
-//         ray->column.draw_end = HEIGHT - 1;
-//     if (initialize_texture(ray, texture))
-//         return (-1);
-//     // 5. Boucle de dessin
-
-//     y = ray->column.draw_start;
-//     while (y <= ray->column.draw_end)
-//     {
-//         /**
-//          * À chaque y, on :
-//          * Cherche le pixel correspondant dans l’image (via tex_x, tex_y),
-//          * Affiche ce pixel à l’écran.
-//         */
-//         texture->tex_y = (int)texture->tex_pos;
-//         if (texture->tex_y < 0)
-//             texture->tex_y = 0;
-//         if (texture->tex_y >= texture->height)
-//             texture->tex_y = texture->height - 1; // & pour rester dans l’image (si height est puissance de 2)
-//         texture->tex_pos += texture->step;
-//         ray->column.color = get_texture_pixels(texture, texture->tex_x, texture->tex_y); // lecture couleur
-//         ray->column.color = apply_shadow(ray->column.color, ray->perp_wall_dist, ray->side);
-//         if (put_pixel(&game->mlx.screen, x, y, ray->column.color))
-//             return (print_err("Ray casting error\n"));
-//         y++;
-//     }
-//     return (0);
-// }
