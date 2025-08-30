@@ -6,16 +6,12 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:24:06 by abouabba          #+#    #+#             */
-/*   Updated: 2025/08/30 14:20:02 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/08/30 15:48:32 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	my_mlx_pixel_put(void	*img, int x, int y, int color)
-{
-	
-}
 
 void	draw_square(t_game *game, int x, int y, int size, int color)
 {
@@ -28,7 +24,7 @@ void	draw_square(t_game *game, int x, int y, int size, int color)
 		j = 0;
 		while(j < size)
 		{
-			my_mlx_pixel_put(&game->helper->img, x + j, y + i, color);
+			my_mlx_pixel_put(game, x + j, y + i, color);
 			j++;
 		}
 		i++;
@@ -37,27 +33,40 @@ void	draw_square(t_game *game, int x, int y, int size, int color)
 
 void	draw_minimap(t_game *game)
 {
-	int row;
-	int col;
-	int tile_size = TILE_SIZE * MINIMAP_SCALE;
-	int x;
-	int y;
-	
-	row = 0;
-	while(game->map[row])
-	{
-		col = 0;
-		while(game->map[row][col])
-		{
-			x = MINIMAP_OFFSET_X + col * tile_size;
-			y = MINIMAP_OFFSET_Y + row * tile_size;
+	int px = (int)game->player.x;
+	int py = (int)game->player.y;
+	int start_x = px - MINIMAP_RADIUS;
+	int end_x   = px + MINIMAP_RADIUS;
+	int start_y = py - MINIMAP_RADIUS;
+	int end_y   = py + MINIMAP_RADIUS;
 
-			if (game->map[row][col])
-				draw_square(game, x, y, tile_size, COL_WALL);
-			else
-				draw_square(game, x, y, tile_size, COL_VOID);
-			col++;
+	for (int y = start_y; y <= end_y; y++)
+	{
+		for (int x = start_x; x <= end_x; x++)
+		{
+			if (y < 0 || y >= game->map_height || x < 0 || x >= game->map_width)
+				continue; // skip out of map bounds
+
+			char tile = game->map[y][x];
+			int color = 0x000000; // default black (empty)
+
+			if (tile == '1')
+				color = 0xFFFFFF; // walls white
+			else if (tile == '0')
+				color = 0x808080; // floor gray
+			else if (ft_strchr("NSEW", tile))
+				color = 0xFF0000; // player start red
+
+			draw_square(game,
+				(x - start_x) * MINIMAP_SCALE,
+				(y - start_y) * MINIMAP_SCALE,
+				MINIMAP_SCALE, color);
 		}
-		row++;
 	}
+	// draw player as green dot in center
+	draw_square(game,
+		MINIMAP_RADIUS * MINIMAP_SCALE,
+		MINIMAP_RADIUS * MINIMAP_SCALE,
+		MINIMAP_SCALE, 0x00FF00);
 }
+

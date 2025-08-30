@@ -40,16 +40,19 @@
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
 
-#define MINI_TILE     6
-#define MINI_X        10
-#define MINI_Y        10
-#define COL_WALL      0xFFFFFF
-#define COL_FLOOR     0x222222
-#define COL_VOID      0x000000
-
-#define MINIMAP_SCALE 0.2
+#define MINIMAP_SCALE 5
+#define MINIMAP_RADIUS 10
 #define MINIMAP_OFFSET_Y 10
 #define MINIMAP_OFFSET_X 10
+
+typedef struct s_img
+{
+    void    *img;
+    char    *addr;
+    int     bits_per_pixel;
+    int     line_length;
+    int     endian;
+}   t_img;
 
 typedef struct s_txtu
 {
@@ -137,6 +140,7 @@ typedef struct s_game
 	int			map_width;
 	int			map_height;
 	t_player	player;
+	t_img		img;
 }	t_game;
 
 typedef struct s_casting
@@ -149,6 +153,7 @@ typedef struct s_casting
     int     step_x;
     int     step_y;
 }   t_casting;  
+
 
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
