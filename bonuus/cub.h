@@ -13,7 +13,7 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42 
 #endif
-#define ROTATION_SPEED 0.005
+#define ROTATION_SPEED 0.05
 # define FOV 60.0 * (M_PI / 180)
 # define ROTATE_SPEED 3
 # define KEY_W 13      // W

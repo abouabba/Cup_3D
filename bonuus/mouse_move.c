@@ -4,6 +4,8 @@ int mouse_move_hook(int x, int y, t_game *game)
 {
 	static int last_x = -1;
 	int delta_x;
+	double retation_speed = 0.05;
+
 	(void)y;
 
 	if (last_x == -1)
@@ -13,7 +15,7 @@ int mouse_move_hook(int x, int y, t_game *game)
 
 	if (delta_x != 0)
 	{
-		game->angle += delta_x * ROTATION_SPEED;
+		game->angle += delta_x * retation_speed;
 		if (game->angle < 0)
 				game->angle += 2 * M_PI;
 		if (game->angle >= 2 * M_PI)
