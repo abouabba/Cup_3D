@@ -71,7 +71,7 @@ int	main(int ac, char **av)
 	init_game(game);
 	int i = 0;
 	game->txt = ft_split("east.xpm  north.xpm south.xpm west.xpm", ' ');
-	
+
 	while (i < 4)
 	{
 		char *uuu= ft_strjoin(ft_strdup("ff/"), game->txt[i]);

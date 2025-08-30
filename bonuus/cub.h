@@ -40,6 +40,17 @@
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
 
+#define MINI_TILE     6
+#define MINI_X        10
+#define MINI_Y        10
+#define COL_WALL      0xFFFFFF
+#define COL_FLOOR     0x222222
+#define COL_VOID      0x000000
+
+#define MINIMAP_SCALE 0.2
+#define MINIMAP_OFFSET_Y 10
+#define MINIMAP_OFFSET_X 10
+
 typedef struct s_txtu
 {
 	void	*txture_p;
@@ -155,7 +166,7 @@ void 	print_map(char **map);
 void	validate_map(t_game *game);
 void	print_error(const char *message);
 int mouse_move_hook(int x, int y, t_game *game);
-
+void draw_minimap(t_game *game);
 
 // helper
 char	*ft_strdup(const char *s);
