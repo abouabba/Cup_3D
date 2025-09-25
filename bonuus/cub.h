@@ -30,7 +30,7 @@
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
 # define TILE_P 3
-# define TILE_SIZE 30
+# define TILE_SIZE 10
 # define TWO_PI 6.28318530718
 
 
