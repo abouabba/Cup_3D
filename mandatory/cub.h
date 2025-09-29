@@ -124,6 +124,7 @@ typedef struct s_game
 	int			map_width;
 	int			map_height;
 	t_player	player;
+	t_ray   ray;
 }	t_game;
 
 typedef struct s_casting

@@ -9,7 +9,7 @@ OBJS = $(SRCS:.c=.o)
 
 NAME = cub3d
 
-MLX_FLAG =  -lmlx -framework OpenGL -framework AppKit -o 
+MLX_FLAG =  -g -lmlx -framework OpenGL -framework AppKit -o 
 
 all: $(NAME)
 

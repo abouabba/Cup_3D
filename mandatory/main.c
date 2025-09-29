@@ -80,8 +80,9 @@ int	main(int ac, char **av)
 		i++;
 	}
 	mlx_hook(game->helper->win, 17, 0, close_window, game);
-	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_loop_hook(game->helper->mlx,&render_map, game);
+	
+	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_loop(game->helper->mlx);
 	return (0);
 }

@@ -31,12 +31,20 @@ void my_mlx_pixel_put(t_game *game, int x, int y, int color)
 
 int  render_map(t_game *game)
 {
+	printf("reduce rgerifgt prace 1\n");
 	mlx_destroy_image(game->helper->mlx, game->helper->img);
+	printf("reduce rgerifgt prace 11\n");
+
 	mlx_clear_window(game->helper->addr, game->helper->win);
+	printf("reduce rgerifgt prace 12\n");
 	game->helper->img = mlx_new_image(game->helper->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	printf("reduce rgerifgt prace 13\n");
 	game->helper->addr = mlx_get_data_addr(game->helper->img, \
 	&game->helper->bpp, &game->helper->line_len, &game->helper->endian);
+	printf("reduce rgerifgt prace 14\n");
     the_3dview(game);
+	printf("reduce rgerifgt prace 154\n");
+
 	draw_minimap_with_rays(game);
     mlx_put_image_to_window(game->helper->mlx, game->helper->win, game->helper->img, 0, 0);
     return (1);

@@ -28,7 +28,7 @@ void	validate_map(t_game *game)
 		{
 			char c = game->map[y][x];
 
-            if (!is_valid_char(c))
+			if (!is_valid_char(c))
             {
                 fprintf(stderr, "Error: Invalid character '%c' at [%d][%d]\n", c, y, x);
                 exit(EXIT_FAILURE);

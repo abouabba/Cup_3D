@@ -238,22 +238,85 @@ void texture_pass(t_game *game, int x, int start, int end,
 	}
 }
 
-void	draw_floor_and_ceiling(t_game *game, int x, int screen_height, int draw_start, int draw_end, int floor_color, int ceiling_color)
+// void draw_floor_and_ceiling(t_game *game, int x, int screen_height,
+//                             int draw_start, int draw_end,
+//                             unsigned int floor_color, unsigned int ceiling_color)
+// {
+//     char *addr = game->helper->addr;
+//     int line_len = game->helper->line_len;
+//     int bpp_bytes = game->helper->bpp / 8;
+
+//     // Make sure x is valid for this image
+//     // (replace game->width with your actual image/screen width)
+//     if (x < 0 || x >= game->map_width) return;
+
+//     // Clamp wall segment to the screen
+//     if (draw_start < 0) draw_start = 0;
+//     if (draw_start > screen_height) draw_start = screen_height;
+//     if (draw_end < -1) draw_end = -1;
+//     if (draw_end >= screen_height) draw_end = screen_height - 1;
+
+//     // Ceiling: rows [0, draw_start)
+//     for (int y = 0; y < draw_start; ++y) {
+//         *(unsigned int *)(addr + y * line_len + x * bpp_bytes) = ceiling_color;
+//     }
+
+//     // Floor: rows (draw_end, screen_height)
+//     for (int y = draw_end + 1; y < screen_height; ++y) {
+//         *(unsigned int *)(addr + y * line_len + x * bpp_bytes) = floor_color;
+//     }
+// }
+// void	draw_floor_and_ceiling(t_game *game, int x, int screen_height, int draw_start, int draw_end, int floor_color, int ceiling_color)
+// {
+// 	char	*pixel;
+
+// 	printf("helo 9\n");
+// 	for (int y = 0; y <= draw_start; y++)
+// 	{
+// 		pixel = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
+// 		*(unsigned int *)pixel = ceiling_color;
+// 	}
+// 	printf("helo 10\n");
+
+// 	for (int y = draw_end ; y < SCREEN_HEIGHT; y++)
+// 	{
+// 		// printf("===================================\n");
+// 		pixel = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
+// 		*(unsigned int *)pixel = floor_color;
+// 	}
+// 	printf("helo 101\n");
+// }
+
+void draw_floor_and_ceiling(t_game *game, int x, int screen_h,
+                            int draw_start, int draw_end,
+                            unsigned int floor_color, unsigned int ceiling_color)
 {
-	char	*pixel;
+    char *addr = game->helper->addr;
+    int stride = game->helper->line_len;
+    int bpp_bytes = game->helper->bpp / 8;
 
-	for (int y = 0; y <= draw_start; y++)
-	{
-		pixel = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
-		*(unsigned int *)pixel = ceiling_color;
-	}
-	for (int y = draw_end; y <= screen_height; y++)
-	{
-		pixel = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
-		*(unsigned int *)pixel = floor_color;
-	}
+    // If you have the real image width, use it. Otherwise replace with SCREEN_WIDTH.
+    int img_w = SCREEN_WIDTH;
+
+    // Safety: x in range
+    if (x < 0 || x >= img_w) return;
+
+    // Clamp draw range to the screen
+    if (draw_start < 0) draw_start = 0;
+    if (draw_start > screen_h) draw_start = screen_h;
+    if (draw_end < -1) draw_end = -1;                  // important: allow -1
+    if (draw_end >= screen_h) draw_end = screen_h - 1;
+
+    // Ceiling rows: [0, draw_start)
+    for (int y = 0; y < draw_start; ++y) {
+        *(unsigned int *)(addr + y * stride + x * bpp_bytes) = ceiling_color;
+    }
+
+    // Floor rows: (draw_end, screen_h)
+    for (int y = draw_end + 1; y < screen_h; ++y) {
+        *(unsigned int *)(addr + y * stride + x * bpp_bytes) = floor_color;
+    }
 }
-
 void    the_3dview(t_game *game)
 {
 	t_ray		ray;
@@ -270,9 +333,16 @@ void    the_3dview(t_game *game)
 	// printf("this is the player posisit x: %d snf  :%d \n", game->player.x,game->player.y);
 	while (i_loop < SCREEN_WIDTH)
 	{
+		printf("this is the number 1\n");
 		ray  = prepare_vars(ray, game, i_loop);
+		printf("this is the number 6\n");
+
 		double dist = cast_dda(game, &ray, holder);
+		printf("this is the number 7\n");
+
 		double distance = dist * cos(ray.ray_angle - game->angle);
+		printf("this is the number 8\n");
+
 		ray.perp_wall_dist = distance;
 		int line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
 		int draw_start = - line_height / 2 + SCREEN_HEIGHT / 2;
@@ -298,11 +368,20 @@ void    the_3dview(t_game *game)
 			else
 				texture_index = NORTH_TEXTURE; // ray moving up
 		}
+		game->ray = ray;
 		int color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
-		draw_floor_and_ceiling(game, i_loop , SCREEN_HEIGHT + 1, draw_start, draw_end, 0xFFDFFFF, 0x0A0D00);
+		printf("this is the number 9\n");
+
+		draw_floor_and_ceiling(game, i_loop , SCREEN_HEIGHT + 1, draw_start, draw_end,game->floor_color, game->ceiling_color);
 		t_txtu *current_texture = &game->txtu[texture_index];
+		printf("this is the number 10\n");
+
 		draw_vertical_line(game, i_loop,draw_start, draw_end, color);
+		printf("this is the number 11\n");
+
 		texture_pass(game, i_loop, draw_start, draw_end, ray, holder, current_texture, line_height);
+		printf("this is the number 12\n");
+
 		i_loop++;
 	}
 }
