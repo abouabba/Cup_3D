@@ -29,10 +29,14 @@
 # define DOWN 125      // Down arrow
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
-# define TILE_P 3
-# define TILE_SIZE 10
+// # define TILE_P 8
+# define TILE_SIZE 20
+
 # define TWO_PI 6.28318530718
 
+#define MOVE_SPEED 5
+#define PLAYER_RADIUS 0.00
+#define ROTATION_SPEED 0.03
 
 
 # define EAST_TEXTURE 3
@@ -181,5 +185,5 @@ int 	bottoms(int keycode, t_game *game);
 void    the_3dview(t_game *game);
 
 
-void draw_minimap_with_rays(t_game *game);
+// void draw_minimap_with_rays(t_game *game);
 #endif
