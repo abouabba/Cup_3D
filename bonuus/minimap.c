@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 12:24:06 by abouabba          #+#    #+#             */
-/*   Updated: 2025/08/30 15:48:32 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/08/31 10:31:41 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ void	draw_minimap(t_game *game)
 	int end_x   = px + MINIMAP_RADIUS;
 	int start_y = py - MINIMAP_RADIUS;
 	int end_y   = py + MINIMAP_RADIUS;
-
-	for (int y = start_y; y <= end_y; y++)
+	int y = start_y;
+	int x;
+	while (y <= end_y)
 	{
-		for (int x = start_x; x <= end_x; x++)
+		x = start_x;
+		while (x <= end_x)
 		{
 			if (y < 0 || y >= game->map_height || x < 0 || x >= game->map_width)
 				continue; // skip out of map bounds
@@ -61,7 +63,9 @@ void	draw_minimap(t_game *game)
 				(x - start_x) * MINIMAP_SCALE,
 				(y - start_y) * MINIMAP_SCALE,
 				MINIMAP_SCALE, color);
+			x++;
 		}
+		y++;
 	}
 	// draw player as green dot in center
 	draw_square(game,
@@ -69,4 +73,3 @@ void	draw_minimap(t_game *game)
 		MINIMAP_RADIUS * MINIMAP_SCALE,
 		MINIMAP_SCALE, 0x00FF00);
 }
-

@@ -34,7 +34,7 @@
 # define TWO_PI 6.28318530718
 
 
-
+#define MOVE_SPEED 3
 # define EAST_TEXTURE 3
 # define WEST_TEXTURE 1
 # define SOUTH_TEXTURE 2
@@ -124,6 +124,7 @@ typedef struct s_game
 	t_textures	textures;
 	char		**txt;
 	t_mlx		*helper;
+	t_ray       ray;
 	double 		angle;
 	int			no;
 	int			so;

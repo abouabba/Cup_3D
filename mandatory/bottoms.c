@@ -21,60 +21,60 @@ void	ft_putnbr(int n)
 		ft_putnbr(n / 10);
 	ft_putchar((n % 10) + '0');
 }
-
-void update_position(t_game *game)
+void move_player(t_game *game, double dx, double dy)
 {
-	game->player.x = game->player.y + 0.5;
-	game->player.y = game->player.x + 0.5;
+    double new_x = game->player.x + (dx / TILE_SIZE) *MOVE_SPEED;
+    double new_y = game->player.y + (dy / TILE_SIZE)* MOVE_SPEED;
+
+    int map_x = (int)new_x;
+    int map_y = (int)new_y;
+
+    printf("this is the next DX|%f|   DY|%f|\n", new_x, new_y);
+    if (game->map[map_y][map_x] != '1') // check wall
+    {
+        game->player.x = new_x;
+        game->player.y = new_y;
+    }
 }
 
-void move_player(t_game *game, int dx, int dy)
-{
-	int new_x = game->player.x + dx;
-	int new_y = game->player.y + dy;
-
-	char next_tile = game->map[new_y][new_x];
-
-	if (next_tile == '1')
-		return;
-	if (next_tile == 'C')
-		game->player.c_count--;
-	if (next_tile == 'E' && game->player.c_count != 0)
-		return;
-	if (next_tile == 'E' && game->player.c_count == 0)
-		exit(1);
-
-	game->map[game->player.y][game->player.x] = '0';
-	game->player.x = new_x;
-	game->player.y = new_y;
-	game->map[new_y][new_x] = 'P';
-	game->player.move++;
-	ft_putnbr(game->player.move);
-	ft_putchar('\n');
-}
- 
-#define ROTATION_SPEED 0.5
 
 int bottoms(int keycode, t_game *game)
 {
-	if (keycode == LEFT)
-	    game->angle -= ROTATION_SPEED;
-	else if (keycode == RIGHT)
-	    game->angle += ROTATION_SPEED;
-	if ( keycode == KEY_D)
-		move_player(game, 0, -1);
-	else if (keycode == KEY_W )
-		move_player(game, 0, 1);
-	else if (keycode == KEY_A)
-		move_player(game, -1, 0);
-	else if (keycode == KEY_S )
-		move_player(game, 1, 0);
-	else if (keycode == 65307)
-		exit(0);
-	
-	mlx_clear_window(game->helper->mlx, game->helper->win);
-	render_map(game);
-	return 0;
+    double dx = 0.0;
+    double dy = 0.0;
+
+    if (keycode == LEFT)
+        game->angle -= ROTATION_SPEED;
+    else if (keycode == RIGHT)
+        game->angle += ROTATION_SPEED;
+
+    if (game->angle < 0)
+        game->angle += 2.0 * M_PI;
+    if (game->angle >= 2.0 * M_PI)
+        game->angle -= 2.0 * M_PI;
+
+    if (keycode == KEY_W) 
+	{
+        dx = cos(game->angle);
+        dy = sin(game->angle);
+    }
+	if (keycode == KEY_S) { // backward
+        dx = -cos(game->angle);
+        dy = -sin(game->angle);
+    } if (keycode == KEY_D) { // strafe left
+        dx = -sin(game->angle);
+        dy =  cos(game->angle);
+    } if (keycode == KEY_A) { // strafe right
+        dx =  sin(game->angle);
+        dy = -cos(game->angle);
+    } if (keycode == 65307) {
+        exit(0);
+    }
+
+    move_player(game, dx, dy);
+    mlx_clear_window(game->helper->mlx, game->helper->win);
+    // segfault
+    render_map(game);
+
+    return 0;
 }
-
-

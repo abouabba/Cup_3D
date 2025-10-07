@@ -4,7 +4,7 @@ int mouse_move_hook(int x, int y, t_game *game)
 {
 	static int last_x = -1;
 	int delta_x;
-	double retation_speed = 0.05;
+	double retation_speed = 0.005;
 
 	(void)y;
 

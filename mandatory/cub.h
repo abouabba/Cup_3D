@@ -29,10 +29,13 @@
 # define DOWN 125      // Down arrow
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
-# define TILE_P 3
-# define TILE_SIZE 30
+// # define TILE_P 8
+# define TILE_SIZE 60
+
 # define TWO_PI 6.28318530718
 
+#define MOVE_SPEED 10
+#define ROTATION_SPEED 0.03
 
 
 # define EAST_TEXTURE 3
@@ -60,8 +63,8 @@ typedef struct s_textures {
 }	t_textures;
 
 typedef struct s_player {
-	int		x;
-	int		y;
+	double		x;
+	double		y;
 	int		move;
 	int		c_count;
 	char	direction;
@@ -124,6 +127,7 @@ typedef struct s_game
 	int			map_width;
 	int			map_height;
 	t_player	player;
+	t_ray   ray;
 }	t_game;
 
 typedef struct s_casting
@@ -169,6 +173,8 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+
+
 //reyn's part
 void 	init_game(t_game *game);
 int 	close_window(t_game *game);
@@ -176,5 +182,9 @@ int 	render_map(t_game *game);
 void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 int 	bottoms(int keycode, t_game *game);
 void    the_3dview(t_game *game);
+
+
+void draw_minimap_with_rays(t_game *game);
+
 
 #endif
