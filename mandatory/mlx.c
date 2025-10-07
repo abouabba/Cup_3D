@@ -43,7 +43,6 @@ int  render_map(t_game *game)
 
     the_3dview(game);
 
-	draw_minimap_with_rays(game);
     mlx_put_image_to_window(game->helper->mlx, game->helper->win, game->helper->img, 0, 0);
     return (1);
 }

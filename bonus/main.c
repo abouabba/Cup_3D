@@ -71,17 +71,18 @@ int	main(int ac, char **av)
 	init_game(game);
 	int i = 0;
 	game->txt = ft_split("east.xpm  north.xpm south.xpm west.xpm", ' ');
-
+	
 	while (i < 4)
 	{
-		char *uuu= ft_strjoin(ft_strdup("ff/"), game->txt[i]);
+		char *uuu= ft_strjoin(ft_strdup("textures/"), game->txt[i]);
 		printf("%s\n", uuu);
 		game->txtu[i] = init_txtu(game, uuu);
 		i++;
 	}
 	mlx_hook(game->helper->win, 17, 0, close_window, game);
-	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_loop_hook(game->helper->mlx,&render_map, game);
+	
+	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_hook(game->helper->win, 6, 1L << 6, mouse_move_hook, game);
 	mlx_loop(game->helper->mlx);
 	return (0);

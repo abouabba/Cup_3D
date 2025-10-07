@@ -65,6 +65,8 @@ typedef struct s_textures {
 typedef struct s_player {
 	double		x;
 	double		y;
+	double		dir_y;
+	double		dir_x;
 	int		move;
 	int		c_count;
 	char	direction;
@@ -182,9 +184,6 @@ int 	render_map(t_game *game);
 void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 int 	bottoms(int keycode, t_game *game);
 void    the_3dview(t_game *game);
-
-
-void draw_minimap_with_rays(t_game *game);
 
 
 #endif

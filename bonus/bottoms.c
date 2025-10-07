@@ -21,7 +21,6 @@ void	ft_putnbr(int n)
 		ft_putnbr(n / 10);
 	ft_putchar((n % 10) + '0');
 }
-
 void move_player(t_game *game, double dx, double dy)
 {
     double new_x = game->player.x + (dx / TILE_SIZE) *MOVE_SPEED;

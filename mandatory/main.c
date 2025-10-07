@@ -74,7 +74,7 @@ int	main(int ac, char **av)
 	
 	while (i < 4)
 	{
-		char *uuu= ft_strjoin(ft_strdup("ff/"), game->txt[i]);
+		char *uuu= ft_strjoin(ft_strdup("textures/"), game->txt[i]);
 		printf("%s\n", uuu);
 		game->txtu[i] = init_txtu(game, uuu);
 		i++;

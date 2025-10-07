@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS = check_args.c config_parser.c ft_split.c get_next_line.c \
        init.c main.c map_parser.c parse_map.c parser.c utils_2.c utils.c \
-	   validate_map.c  mlx.c rays.c bottoms.c mouse_move.c minimap.c
+	   validate_map.c  mlx.c rays.c bottoms.c mouse_move.c
 
 OBJS = $(SRCS:.c=.o)
 
