@@ -30,7 +30,7 @@
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
 // # define TILE_P 8
-# define TILE_SIZE 60
+# define TILE_SIZE 64
 
 # define TWO_PI 6.28318530718
 
@@ -42,6 +42,14 @@
 # define WEST_TEXTURE 1
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
+
+
+#define MINIMAP_SCALE 8
+#define MINIMAP_RADIUS 5
+#define MINIMAP_OFFSET_X 20
+#define MINIMAP_OFFSET_Y 20
+
+
 
 typedef struct s_txtu
 {
@@ -187,5 +195,5 @@ void    the_3dview(t_game *game);
 
 
 int mouse_move_hook(int x, int y, t_game *game);
-
+void	draw_minimap(t_game *game);
 #endif

@@ -42,7 +42,7 @@ int  render_map(t_game *game)
 	&game->helper->bpp, &game->helper->line_len, &game->helper->endian);
 
     the_3dview(game);
-
+	draw_minimap(game);
 
     mlx_put_image_to_window(game->helper->mlx, game->helper->win, game->helper->img, 0, 0);
     return (1);
