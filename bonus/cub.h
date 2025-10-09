@@ -45,10 +45,14 @@
 
 
 #define MINIMAP_SCALE 8
-#define MINIMAP_RADIUS 5
+#define MINIMAP_RADIUS 8
 #define MINIMAP_OFFSET_X 20
 #define MINIMAP_OFFSET_Y 20
 
+#define MINIMAP_SIZE 140       // width & height of minimap
+#define MINIMAP_TILE_SIZE 5    // pixels per map tile in minimap
+#define MINIMAP_OFFSET_X 20
+#define MINIMAP_OFFSET_Y 20
 
 
 typedef struct s_txtu
