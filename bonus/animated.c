@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:04:16 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/10 20:55:59 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/10 21:03:21 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void draw_gun(t_game *game)
         SCREEN_HEIGHT - gun->height
     );
 }
-
-
 
 int rander(t_game *game)
 {
