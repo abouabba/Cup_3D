@@ -148,7 +148,7 @@ typedef struct s_game
 	int			map_height;
 	t_player	player;
 	t_ray		ray;
-	t_sprite	gun[2];
+	t_sprite	gun[5];
 	int			frame;
 }	t_game;
 

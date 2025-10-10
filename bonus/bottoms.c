@@ -68,7 +68,7 @@ int bottoms(int keycode, t_game *game)
         dx =  sin(game->angle);
         dy = -cos(game->angle);
     } if (keycode == 49)
-        game->frame = 1;
+        game->frame = 4;
     if (keycode == 53) {
         exit(0);
     }
