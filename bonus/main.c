@@ -84,6 +84,9 @@ int	main(int ac, char **av)
 	
 	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_hook(game->helper->win, 6, 1L << 6, mouse_move_hook, game);
+	load_gun_sprite(game);
+	mlx_loop_hook(game->helper->mlx, game_gun, game);
+
 	mlx_loop(game->helper->mlx);
 	return (0);
 }

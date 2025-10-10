@@ -118,6 +118,12 @@ typedef  struct s_mlx
 	int		endian;
 }		t_mlx;
 
+typedef struct s_sprite
+{
+	char	*img;
+	int		width;
+	int		height;
+} t_sprite;
 
 typedef struct s_game 
 {
@@ -141,7 +147,9 @@ typedef struct s_game
 	int			map_width;
 	int			map_height;
 	t_player	player;
-	t_ray   ray;
+	t_ray		ray;
+	t_sprite	gun[2];
+	int			frame;
 }	t_game;
 
 typedef struct s_casting
@@ -154,6 +162,7 @@ typedef struct s_casting
     int     step_x;
     int     step_y;
 }   t_casting;  
+
 
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
@@ -200,4 +209,9 @@ void    the_3dview(t_game *game);
 
 int mouse_move_hook(int x, int y, t_game *game);
 void	draw_minimap(t_game *game);
+
+int animate_gun(t_game *game);
+int rander(t_game *game);
+void    load_gun_sprite(t_game *game);
+int	game_gun(t_game *game);
 #endif
