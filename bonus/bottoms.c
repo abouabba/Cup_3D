@@ -29,7 +29,7 @@ void move_player(t_game *game, double dx, double dy)
     int map_x = (int)new_x;
     int map_y = (int)new_y;
 
-    printf("this is the next DX|%f|   DY|%f|\n", new_x, new_y);
+    // printf("this is the next DX|%f|   DY|%f|\n", new_x, new_y);
     if (game->map[map_y][map_x] != '1') // check wall
     {
         game->player.x = new_x;
@@ -58,25 +58,28 @@ int bottoms(int keycode, t_game *game)
         dx = cos(game->angle);
         dy = sin(game->angle);
     }
-	if (keycode == KEY_S) { // backward
+	else if (keycode == KEY_S) { // backward
         dx = -cos(game->angle);
         dy = -sin(game->angle);
-    } if (keycode == KEY_D) { // strafe left
+    } else if (keycode == KEY_D) { // strafe left
         dx = -sin(game->angle);
         dy =  cos(game->angle);
-    } if (keycode == KEY_A) { // strafe right
+    } else if (keycode == KEY_A) { // strafe right
         dx =  sin(game->angle);
         dy = -cos(game->angle);
-    } if (keycode == 49)
-        game->frame = 4;
-    if (keycode == 53) {
+    } else if (keycode == 49)
+        game->frame = 14;
+    else if (keycode == 53) {
         exit(0);
     }
+    else 
+            return 0;
 
     move_player(game, dx, dy);
     mlx_clear_window(game->helper->mlx, game->helper->win);
     // segfault
-    render_map(game);
+    // render_map(game); 
+    rander(game); 
 
     return 0;
 }
