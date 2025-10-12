@@ -17,7 +17,7 @@ int close_window(t_game *game)
 {
     (void)game;
     // need to free all of the 
-    exit(1);
+    exit(0);
 }
 
 void my_mlx_pixel_put(t_game *game, int x, int y, int color)

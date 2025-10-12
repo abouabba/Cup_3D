@@ -49,7 +49,20 @@ void	validate_map(t_game *game)
 			{
 				print_error("Map is not closed");
 			}
+			if (c == 'D')
+			{
+				int vertical = (game->map[y - 1][x] == '1' && game->map[y + 1][x] == '1');
+				int horizontal = (game->map[y][x - 1] == '1' && game->map[y][x + 1] == '1');
+				if (y == 0 || x == 0 || y >= game->map_height - 1 || x >= game->map_width - 1)
+					print_error("Door on map border");
 
+				if (!(vertical || horizontal))
+					print_error("Door must be placed between two walls (either vertical or horizontal)");
+
+				if (game->map[y - 1][x] == ' ' || game->map[y + 1][x] == ' ' ||
+					game->map[y][x - 1] == ' ' || game->map[y][x + 1] == ' ')
+					print_error("Door cannot touch empty space");
+			}
 			x++;
 		}
 		y++;
