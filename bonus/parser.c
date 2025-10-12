@@ -73,7 +73,7 @@ int	parse_color(char *line)
 	int len = ft_strlen(split[2]);
 	if (split[2][len - 1] == '\n')
 	split[2][len - 1] = '\0';
-	printf ("r = [%s],g = [%s],b = [%s]\n", split[0], split[1], split[2]);
+	// printf ("r = [%s],g = [%s],b = [%s]\n", split[0], split[1], split[2]);
 
 	if (!split[0][0] || !split[1][0] || !split[2][0] ||
 		!is_digit_str(split[0]) || !is_digit_str(split[1]) || !is_digit_str(split[2]))
@@ -95,7 +95,7 @@ void	parse_line(t_game *game, char *line)
 {
 	if (is_config_line(line))
 	{
-		printf ("[%s]\n", line);
+		// printf ("[%s]\n", line);
 		if (game->map_started)
             print_error("Error: Config line found after map started");
 		parse_config_line(game, line);

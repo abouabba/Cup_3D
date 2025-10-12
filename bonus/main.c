@@ -48,7 +48,6 @@ int	main(int ac, char **av)
 	if (fd == -1)
 	{
 		perror("Error\n<----!Can't open file---->");
-		//neet to free t_game
 		exit(1);
 	}
 
@@ -62,7 +61,7 @@ int	main(int ac, char **av)
 	// Next steps would be:
 	is_valid_texture(game);
 	finalize_map(game);
-	print_map(game->map);
+	// print_map(game->map);
 	validate_map(game);
 	// and parse the map in file map.cub in function validate_map
 
