@@ -67,7 +67,7 @@ int bottoms(int keycode, t_game *game)
     } if (keycode == KEY_A) { // strafe right
         dx =  sin(game->angle);
         dy = -cos(game->angle);
-    } if (keycode == 65307) {
+    } if (keycode == 53) {
         exit(0);
     }
 
