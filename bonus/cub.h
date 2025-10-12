@@ -150,6 +150,7 @@ typedef struct s_game
 	t_ray		ray;
 	t_sprite	gun[15];
 	int			frame;
+	int			flage;
 }	t_game;
 
 typedef struct s_casting
@@ -214,4 +215,5 @@ int animate_gun(t_game *game);
 int rander(t_game *game);
 void    load_gun_sprite(t_game *game);
 int	game_gun(t_game *game);
+
 #endif

@@ -23,4 +23,3 @@ void save_map_line(t_game *game, char *line)
         tmp->next = new;
     }
 }
-

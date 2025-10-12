@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 08:55:50 by rlamlaik          #+#    #+#             */
-/*   Updated: 2025/10/07 11:59:54 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/12 01:36:33 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,8 @@ void draw_floor_and_ceiling(t_game *game, int x, int screen_h,
     for (int y = 0; y < draw_start; ++y) {
         *(unsigned int *)(addr + y * stride + x * bpp_bytes) = ceiling_color;
     }
-    for (int y = draw_end + 1; y < screen_h; ++y) {
+
+    for (int y = draw_end + 1; y < screen_h - 1; ++y) {
         *(unsigned int *)(addr + y * stride + x * bpp_bytes) = floor_color;
     }
 }
