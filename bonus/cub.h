@@ -49,10 +49,11 @@
 // #define MINIMAP_OFFSET_X 20
 // #define MINIMAP_OFFSET_Y 20
 
-#define MINIMAP_SIZE 140       // width & height of minimap
-#define MINIMAP_TILE_SIZE 5    // pixels per map tile in minimap
+#define MINIMAP_SIZE 100
+#define MINIMAP_TILE_SIZE 8
 #define MINIMAP_OFFSET_X 20
 #define MINIMAP_OFFSET_Y 20
+
 
 
 typedef struct s_txtu
@@ -148,7 +149,7 @@ typedef struct s_game
 	int			map_height;
 	t_player	player;
 	t_ray		ray;
-	t_sprite	gun[15];
+	t_sprite	gun[17];
 	int			frame;
 	int			flage;
 }	t_game;
@@ -197,8 +198,6 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
-int rander(t_game *game);
-
 //reyn's part
 void 	init_game(t_game *game);
 int 	close_window(t_game *game);
@@ -212,7 +211,6 @@ int mouse_move_hook(int x, int y, t_game *game);
 void	draw_minimap(t_game *game);
 
 int animate_gun(t_game *game);
-int rander(t_game *game);
 void    load_gun_sprite(t_game *game);
 int	game_gun(t_game *game);
 
