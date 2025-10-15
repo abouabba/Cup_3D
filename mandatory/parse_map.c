@@ -35,7 +35,6 @@ void print_map(char **map)
 	}
 }
 
-
 void finalize_map(t_game *game)
 {
     game->map_height = get_map_height(game->map_lines);
