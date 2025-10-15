@@ -6,21 +6,22 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:04:16 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/11 16:52:27 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/14 17:39:00 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
+
 void    load_gun_sprite(t_game *game)
 {
-	char *files[15] = {"animat/gun_1.xpm", "animat/gun_2.xpm", "animat/gun_3.xpm",
-                        "animat/gun_4.xpm", "animat/gun_5.xpm", "animat/gun_6.xpm",
-                        "animat/gun_7.xpm", "animat/gun_8.xpm", "animat/gun_9.xpm",
-                        "animat/gun_10.xpm", "animat/gun_11.xpm", "animat/gun_12.xpm",
-                        "animat/gun_13.xpm", "animat/gun_14.xpm", "animat/gun_15.xpm"};
+	char *files[17] = {"animat/1.xpm",  "animat/2.xpm",  "animat/3.xpm",  "animat/4.xpm",
+                        "animat/5.xpm",  "animat/6.xpm",  "animat/7.xpm",  "animat/8.xpm",
+                        "animat/9.xpm",  "animat/10.xpm",  "animat/11.xpm",  "animat/12.xpm",
+                        "animat/13.xpm",  "animat/14.xpm",  "animat/15.xpm",  "animat/16.xpm",
+                        "animat/17.xpm",};
 	int i = 0;
-	while (i < 15)
+	while (i < 17)
 	{
 		game->gun[i].img = mlx_xpm_file_to_image(
 			game->helper->mlx, files[i], &game->gun[i].width, &game->gun[i].height);
@@ -38,10 +39,7 @@ void draw_gun(t_game *game)
 {
     t_sprite *gun;
 
-    if (game->frame == 14)
-        gun = &game->gun[14];
-    else
-        gun = &game->gun[game->frame];
+    gun = &game->gun[game->frame];
 
     mlx_put_image_to_window(
         game->helper->mlx,
@@ -52,13 +50,6 @@ void draw_gun(t_game *game)
     );
 }
 
-int rander(t_game *game)
-{
-	render_map(game);
-	draw_gun(game);
-	return (0);
-}
-
 int animate_gun(t_game *game)
 {
     static int counter = 0;
@@ -66,30 +57,32 @@ int animate_gun(t_game *game)
 
     counter++;
 
-    if (game->frame == 14)
+    if (game->frame == 0)
     {
-        if (counter > 15)
+        if (counter > 10)
         {
+            idle_frame = (idle_frame + 1) % 1;
             game->frame = 0;
             counter = 0;
         }
     }
     else
     {
-        if (counter > 10)
+        if (counter > 2)
         {
-            idle_frame = (idle_frame + 1) % 14;
-            game->frame = idle_frame;
+            game->frame++;
+            if (game->frame >= 17)
+                game->frame = 0;
             counter = 0;
         }
     }
     return (0);
 }
 
-
 int game_gun(t_game *game)
 {
-	rander(game);
+    render_map(game);
+	draw_gun(game);
 	animate_gun(game);
 	return (0);
 }

@@ -79,13 +79,13 @@ int bottoms(int keycode, t_game *game)
         dx =  sin(game->angle);
         dy = -cos(game->angle);
     } if (keycode == 49)
-        game->frame = 14;
+        game->frame = 1;
         if (keycode == 53) {
         exit(0);
     }
     move_player(game, dx, dy);
     mlx_clear_window(game->helper->mlx, game->helper->win);
-    rander(game);
+    game_gun(game);
 
     return 0;
 }
