@@ -14,7 +14,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	i = 0;
 	if (len > len_s - start)
 		len = len_s - start;
-	s1 = malloc((len + 1) * sizeof(char));
+	s1 = ft_malloc((len + 1) * sizeof(char), 1);
 	if (!s1)
 		return (NULL);
 	while (i < len)
@@ -88,7 +88,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	big_arry = (char **)malloc((counter_word(s, c) + 1) * sizeof(char *));
+	big_arry = (char **)ft_malloc((counter_word(s, c) + 1) * sizeof(char *), 1);
 	if (!big_arry)
 		return (NULL);
 	big_arry = split(s, big_arry, c);

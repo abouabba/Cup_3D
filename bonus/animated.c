@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:04:16 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/14 17:39:00 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/16 10:18:29 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 
 void    load_gun_sprite(t_game *game)
 {
-	char *files[17] = {"animat/1.xpm",  "animat/2.xpm",  "animat/3.xpm",  "animat/4.xpm",
-                        "animat/5.xpm",  "animat/6.xpm",  "animat/7.xpm",  "animat/8.xpm",
-                        "animat/9.xpm",  "animat/10.xpm",  "animat/11.xpm",  "animat/12.xpm",
-                        "animat/13.xpm",  "animat/14.xpm",  "animat/15.xpm",  "animat/16.xpm",
-                        "animat/17.xpm",};
+	char *files[17] = {"textures/animat/1.xpm",  "textures/animat/2.xpm",  "textures/animat/3.xpm",  "textures/animat/4.xpm",
+                        "textures/animat/5.xpm",  "textures/animat/6.xpm",  "textures/animat/7.xpm",  "textures/animat/8.xpm",
+                        "textures/animat/9.xpm",  "textures/animat/10.xpm",  "textures/animat/11.xpm",  "textures/animat/12.xpm",
+                        "textures/animat/13.xpm",  "textures/animat/14.xpm",  "textures/animat/15.xpm",  "textures/animat/16.xpm",
+                        "textures/animat/17.xpm",};
 	int i = 0;
 	while (i < 17)
 	{

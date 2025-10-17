@@ -6,13 +6,13 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 08:55:50 by rlamlaik          #+#    #+#             */
-/*   Updated: 2025/10/12 07:58:03 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/15 22:31:13 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-t_casting    *loop_helper(t_game *game, t_ray *ray, t_casting *holder)
+t_casting	*loop_helper(t_game *game, t_ray *ray, t_casting *holder)
 {
 	holder->hited = 0;
 	while (!holder->hited)
@@ -73,7 +73,6 @@ double cast_dda(t_game *game, t_ray *ray, t_casting *holder)
 
 void	draw_vertical_line(t_game *game, int x, int start, int end, int color)
 {
-	(void)game;
 	char	*pixel;
 	int		y;
 
@@ -147,7 +146,7 @@ double cast_ray(t_game *game, t_ray *ray, int ray_id)
 	return perp_wall_dist;
 }
 
-double normalize_angle(double angle)
+double	normalize_angle(double angle)
 {
 	while (angle < 0)
 		angle += 2 * M_PI;
@@ -156,7 +155,7 @@ double normalize_angle(double angle)
 	return angle;
 }
 
-t_ray    prepare_vars(t_ray ray, t_game *game, int i_loop)
+t_ray	prepare_vars(t_ray ray, t_game *game, int i_loop)
 {
 	double fov;
 	double angle_step;
@@ -178,8 +177,7 @@ t_ray    prepare_vars(t_ray ray, t_game *game, int i_loop)
 	return (ray);
 }
 
-void texture_pass(t_game *game, int x, int start, int end,
-				  t_ray ray, t_casting *holder, t_txtu *texture, int line_height)
+void	texture_pass(t_game *game, int x, int start, int end, t_ray ray, t_casting *holder, t_txtu *texture, int line_height)
 {
 	(void) holder;
 	int tex_width = texture->width;
@@ -221,80 +219,106 @@ void texture_pass(t_game *game, int x, int start, int end,
 	}
 }
 
-void draw_floor_and_ceiling(t_game *game, int x, int screen_h,
-                            int draw_start, int draw_end,
-                            unsigned int floor_color, unsigned int ceiling_color)
+void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars	*vars)
 {
-    char *addr = game->helper->addr;
-    int stride = game->helper->line_len;
-    int bpp_bytes = game->helper->bpp / 8;
-    int img_w = SCREEN_WIDTH;
+	char	*addr;
+	int		stride;
+	int		bpp_bytes;
+	
+	stride = game->helper->line_len;
+	bpp_bytes = game->helper->bpp / 8;
+	addr = game->helper->addr;
 
-    if (x < 0 || x >= img_w)
+	if (x < 0 || x >= SCREEN_WIDTH) 
 		return;
-    if (draw_start < 0)
-		draw_start = 0;
-    if (draw_start > screen_h)
-		draw_start = screen_h;
-    if (draw_end < -1)
-		draw_end = -1;
-    if (draw_end >= screen_h)
-		draw_end = screen_h - 1;
-    for (int y = 0; y < draw_start; ++y) {
-        *(unsigned int *)(addr + y * stride + x * bpp_bytes) = ceiling_color;
-    }
-
-    for (int y = draw_end + 1; y < screen_h - 1; ++y) {
-        *(unsigned int *)(addr + y * stride + x * bpp_bytes) = floor_color;
-    }
+	if (vars->draw_start < 0)
+		vars->draw_start = 0;
+	if (vars->draw_start > (SCREEN_HEIGHT + 1))
+		vars->draw_start = (SCREEN_HEIGHT + 1);
+	if (vars->draw_end < -1)
+		vars->draw_end = -1;
+	if (vars->draw_end >= (SCREEN_HEIGHT + 1))
+		vars->draw_end = (SCREEN_HEIGHT + 1) - 1;
+	for (int y = 0; y < vars->draw_start; ++y) {
+		*(unsigned int *)(addr + y * stride + x * bpp_bytes) = game->ceiling_color;
+	}
+	for (int y = vars->draw_end + 1; y < (SCREEN_HEIGHT + 1); ++y) {
+		*(unsigned int *)(addr + y * stride + x * bpp_bytes) = game->floor_color;
+	}
 }
-void    the_3dview(t_game *game)
+
+int	texture_side(t_ray ray)
 {
-	t_ray		ray;
-	int			i_loop;
-	t_casting	*holder;
+	int index;
 
-	holder = malloc(sizeof(t_casting));
-	holder->hited =0;
-	holder->side =0;
-	holder->side_dist_x =0;
-	holder->side_dist_y =0;
+	index = 0;
+	if (ray.side == 0)
+	{
+		if (ray.ray_dir_x > 0)
+			index = EAST_TEXTURE;
+		else
+			index = WEST_TEXTURE;
+	}
+	else
+	{
+		if (ray.ray_dir_y > 0)
+			index = SOUTH_TEXTURE;
+		else
+			index = NORTH_TEXTURE;
+	}
+	return (index);
+}
+
+void	varsinit(t_loopvars *vars, double distance, t_casting *holder)
+{
+	vars->line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
+	vars->draw_start = - vars->line_height / 2 + SCREEN_HEIGHT / 2;
+	vars->draw_end = vars->line_height / 2 + SCREEN_HEIGHT / 2;
+	vars->color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
+	if (vars->draw_start < 0)
+			vars->draw_start = 0;
+	if (vars->draw_end >= SCREEN_HEIGHT)
+		vars->draw_end = SCREEN_HEIGHT - 1;
+}
+
+int	loophandeler(t_casting	*holder, t_game *game)
+{
+	int		i_loop;
+	t_ray	ray;
+	int		texture_index;
+	t_loopvars	*vars;
+
+	vars = ft_malloc(sizeof(t_loopvars), 1);
 	i_loop = 0;
-
 	while (i_loop < SCREEN_WIDTH)
 	{
 		ray  = prepare_vars(ray, game, i_loop);
 		double dist = cast_dda(game, &ray, holder);
 		double distance = dist * cos(ray.ray_angle - game->angle);
 		ray.perp_wall_dist = distance;
-		int line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
-		int draw_start = - line_height / 2 + SCREEN_HEIGHT / 2;
-		int draw_end = line_height / 2 + SCREEN_HEIGHT / 2;
-		if (draw_start < 0)
-			draw_start = 0;
-		if (draw_end >= SCREEN_HEIGHT)
-			draw_end = SCREEN_HEIGHT - 1;
-		int texture_index;     
-		if (ray.side == 0)
-		{
-			if (ray.ray_dir_x > 0)
-				texture_index = EAST_TEXTURE;
-			else
-				texture_index = WEST_TEXTURE;
-		}
-		else 
-		{
-			if (ray.ray_dir_y > 0)
-				texture_index = SOUTH_TEXTURE;
-			else
-				texture_index = NORTH_TEXTURE;
-		}
+		varsinit(vars, distance, holder);
+		texture_index = texture_side(ray);
 		game->ray = ray;
 		int color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
-		draw_floor_and_ceiling(game, i_loop , SCREEN_HEIGHT + 1, draw_start, draw_end,game->floor_color, game->ceiling_color);
+		// draw_floor_and_ceiling(game, i_loop , vars);
 		t_txtu *current_texture = &game->txtu[texture_index];
-		draw_vertical_line(game, i_loop,draw_start, draw_end, color);
-		texture_pass(game, i_loop, draw_start, draw_end, ray, holder, current_texture, line_height);
+		draw_vertical_line(game, i_loop,vars->draw_start,vars->draw_end, color);
+		texture_pass(game, i_loop, vars->draw_start, vars->draw_end, ray, holder, current_texture, vars->line_height);
 		i_loop++;
 	}
+	return (1);
+}
+
+void	the_3dview(t_game *game)
+{
+	int			i_loop;
+	t_casting	*holder;
+
+	holder = ft_malloc(sizeof(t_casting), 1);
+	holder->hited =0;
+	holder->side =0;
+	holder->side_dist_x =0;
+	holder->side_dist_y =0;
+	i_loop = 0;
+	loophandeler(holder, game);
 }

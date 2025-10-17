@@ -21,6 +21,7 @@ void	ft_putnbr(int n)
 		ft_putnbr(n / 10);
 	ft_putchar((n % 10) + '0');
 }
+
 void move_player(t_game *game, double dx, double dy)
 {
     double new_x = game->player.x + (dx / TILE_SIZE) * MOVE_SPEED;
@@ -41,10 +42,16 @@ void move_player(t_game *game, double dx, double dy)
     {
         return;
     }
-    if (game->map[curr_map_y ][map_x] != '1')
+    if (game->map[map_y][map_x] == ' ' &&
+        game->map[curr_map_y][map_x] == ' ' &&
+        game->map[map_y][curr_map_x] == ' ')
+    {
+        return;
+    }
+    if (game->map[curr_map_y ][map_x] != '1' && game->map[curr_map_y ][map_x] != ' ')
         game->player.x = new_x;
 
-    if (game->map[map_y ][curr_map_x] != '1') 
+    if (game->map[map_y ][curr_map_x] != '1' && game->map[map_y ][curr_map_x] != ' ') 
         game->player.y = new_y;
 }
 
@@ -69,23 +76,27 @@ int bottoms(int keycode, t_game *game)
         dx = cos(game->angle);
         dy = sin(game->angle);
     }
-    if (keycode == KEY_S) { // backward
+    if (keycode == KEY_S)
+    {
         dx = -cos(game->angle);
         dy = -sin(game->angle);
-    } if (keycode == KEY_D) { // strafe left
+    }
+    if (keycode == KEY_D)
+    {
         dx = -sin(game->angle);
         dy =  cos(game->angle);
-    } if (keycode == KEY_A) { // strafe right
+    } if (keycode == KEY_A)
+    {
         dx =  sin(game->angle);
         dy = -cos(game->angle);
-    } if (keycode == 49)
+    }if (keycode == 49)
         game->frame = 1;
-        if (keycode == 53) {
+    if (keycode == 53) {
         exit(0);
     }
     move_player(game, dx, dy);
     mlx_clear_window(game->helper->mlx, game->helper->win);
     game_gun(game);
-
     return 0;
 }
+

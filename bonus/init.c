@@ -22,6 +22,5 @@ void	init_game_struct(t_game *game)
 	game->ea = 0;
 	game->f = 0;
 	game->c = 0;
-	game->flage = 0;
 	game->player.direction = '\0';
 }

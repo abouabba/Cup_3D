@@ -1,7 +1,7 @@
-SO textures/south.png
-EA textures/east.png
-WE textures/west.png
-NO textures/north.png
+SO textures/textures/east.xpm
+EA textures/textures/east.xpm
+WE textures/textures/west.xpm
+NO textures/textures/north.xpm
 
 F 0,0,0
 C 255,255,255

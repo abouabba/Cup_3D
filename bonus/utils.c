@@ -16,7 +16,7 @@ char	*ft_strdup(const char *s1)
 	char	*s2;
 
 	i = 0;
-	s2 = malloc((ft_strlen(s1) + 1) * (sizeof(char)));
+	s2 = ft_malloc((ft_strlen(s1) + 1) * (sizeof(char)), 1);
 	if (!s2)
 		return (NULL);
 	while (s1[i])
@@ -58,7 +58,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (ft_strdup(s2));
 	if (!s2)
 		return (ft_strdup(s1));
-	s_everyone = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	s_everyone = ft_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
 	if (!s_everyone)
 	{
 		free(s1);

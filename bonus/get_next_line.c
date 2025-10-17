@@ -7,7 +7,7 @@ char	*check_read(int fd, char *buffer)
 
 	if (BUFFER_SIZE > INT_MAX)
 		return (NULL);
-	temp = malloc((size_t)BUFFER_SIZE + 1);
+	temp = ft_malloc((size_t)BUFFER_SIZE + 1, 1);
 	if (!temp)
 		return (NULL);
 	while (1)
@@ -56,7 +56,7 @@ char	*get_the_line(char *buffer)
 	j = 0;
 	while (buffer[i] && (buffer[i] != '\n'))
 		i++;
-	retu = malloc(i + 2);
+	retu = ft_malloc(i + 2, 1);
 	if (!retu)
 		return (NULL);
 	while (j < i)

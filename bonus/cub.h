@@ -30,12 +30,12 @@
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
 // # define TILE_P 8
-# define TILE_SIZE 64
+# define TILE_SIZE 60
 
 # define TWO_PI 6.28318530718
 
-#define MOVE_SPEED 10
-#define ROTATION_SPEED 0.03
+#define MOVE_SPEED 37
+#define ROTATION_SPEED 0.08
 
 
 # define EAST_TEXTURE 3
@@ -44,16 +44,33 @@
 # define NORTH_TEXTURE 0
 
 
-// #define MINIMAP_SCALE 8
-// #define MINIMAP_RADIUS 8
-// #define MINIMAP_OFFSET_X 20
-// #define MINIMAP_OFFSET_Y 20
 
-#define MINIMAP_SIZE 100
+#define MINIMAP_SIZE 150
 #define MINIMAP_TILE_SIZE 8
-#define MINIMAP_OFFSET_X 20
-#define MINIMAP_OFFSET_Y 20
+#define MINIMAP_OFFSET_X 30
+#define MINIMAP_OFFSET_Y 30
+#define FRAME_COLOR 0x555555
+#define WALL_COLOR 0x800000
+#define FLOOR_COLOR 0x000000
+#define PLAYER_COLOR 0x00FF00
 
+#define MINIMAP_X 20
+#define MINIMAP_Y 20
+
+typedef struct s_malloc
+{
+	void			*toalloc;
+	struct s_malloc	*next;
+}					t_malloc;
+
+
+typedef struct s_loopvars
+{
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int color;
+}				t_loopvars;
 
 
 typedef struct s_txtu
@@ -119,6 +136,7 @@ typedef  struct s_mlx
 	int		endian;
 }		t_mlx;
 
+
 typedef struct s_sprite
 {
 	char	*img;
@@ -165,7 +183,6 @@ typedef struct s_casting
     int     step_y;
 }   t_casting;  
 
-
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
 void	init_game_struct(t_game *game);
@@ -198,6 +215,8 @@ void	*ft_memset(void *b, int c, size_t len);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
+
+
 //reyn's part
 void 	init_game(t_game *game);
 int 	close_window(t_game *game);
@@ -205,13 +224,9 @@ int 	render_map(t_game *game);
 void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 int 	bottoms(int keycode, t_game *game);
 void    the_3dview(t_game *game);
-
-
-int mouse_move_hook(int x, int y, t_game *game);
-void	draw_minimap(t_game *game);
-
-int animate_gun(t_game *game);
+void	*ft_malloc(unsigned int size, int flag);
+int		game_gun(t_game *game);
 void    load_gun_sprite(t_game *game);
-int	game_gun(t_game *game);
-
+int		mouse_move_hook(int x, int y, t_game *game);
+void	draw_minimap(t_game *game);
 #endif

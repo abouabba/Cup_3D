@@ -6,7 +6,7 @@ void save_map_line(t_game *game, char *line)
     if (len > 0 && line[len - 1] == '\n')
         line[len - 1] = '\0';
 
-    t_line *new = malloc(sizeof(t_line));
+    t_line *new = ft_malloc(sizeof(t_line), 1);
     if (!new)
         return;
 

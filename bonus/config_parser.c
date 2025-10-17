@@ -48,5 +48,4 @@ void	parse_config_line(t_game *game, char *line)
 		game->ceiling_color = parse_color(line + 2);
 		game->c++;
 	}
-	game->flage++;
 }
