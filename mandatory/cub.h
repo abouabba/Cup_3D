@@ -1,14 +1,14 @@
 #ifndef CUB_H
 # define CUB_H
 
-# include <stdlib.h>
+# include "stdlib.h"
 # include <stdio.h>
 # include <fcntl.h>
 # include <unistd.h>
 # include <string.h>
 # include <limits.h>
 # include "mlx.h"
-# include <math.h>
+# include "math.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42 
@@ -34,7 +34,7 @@
 
 # define TWO_PI 6.28318530718
 
-#define MOVE_SPEED 25
+#define MOVE_SPEED 28
 #define ROTATION_SPEED 0.08
 
 
@@ -52,13 +52,6 @@ typedef struct s_malloc
 }					t_malloc;
 
 
-typedef struct s_loopvars
-{
-	int line_height;
-	int draw_start;
-	int draw_end;
-	int color;
-}				t_loopvars;
 
 
 typedef struct s_txtu
@@ -72,6 +65,14 @@ typedef struct s_txtu
 	int		line_len;
 }	t_txtu;
 
+typedef struct s_loopvars
+{
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int color;
+	t_txtu *texture;
+}				t_loopvars;
 
 typedef struct s_textures {
 	char	*north;
@@ -161,6 +162,20 @@ typedef struct s_casting
     int     step_y;
 }   t_casting;  
 
+
+typedef struct s_texthelper
+{
+	int				tex_width;
+	int				tex_height;
+	double			wall_x;
+	double			step;
+	double			tex_pos;
+	int				tex_x;
+	int				y;
+	int				x;
+
+}				t_texthelper;
+
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
 void	init_game_struct(t_game *game);
@@ -194,15 +209,15 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 
-
-//reyn's part
-void 	init_game(t_game *game);
-int 	close_window(t_game *game);
-int 	render_map(t_game *game);
-void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
-int 	bottoms(int keycode, t_game *game);
-void    the_3dview(t_game *game);
+void	init_game(t_game *game);
+void	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 void	*ft_malloc(unsigned int size, int flag);
+void	the_3dview(t_game *game);
+void	init_player_direction(t_game *game, char dir);
+int		close_window(t_game *game);
+int		render_map(t_game *game);
+int		bottoms(int keycode, t_game *game);
+
 
 
 #endif

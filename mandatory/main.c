@@ -37,10 +37,13 @@ void hookshandeling(t_game *game)
 	finalize_map(game);
 	validate_map(game);
 	init_game(game);
+
 	game->txtu[0] = init_txtu(game, game->textures.east);
 	game->txtu[1] = init_txtu(game, game->textures.north);
 	game->txtu[2] = init_txtu(game, game->textures.south);
 	game->txtu[3] = init_txtu(game, game->textures.west);
+
+	init_player_direction(game, game->player.direction);
 	mlx_hook(game->helper->win, 17, 0, close_window, game);
 	mlx_loop_hook(game->helper->mlx,&render_map, game);
 	mlx_hook(game->helper->win, 2, 1, bottoms, game);
