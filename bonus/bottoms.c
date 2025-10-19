@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bottoms.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlamlaik <rlamlaik@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-10-16 12:12:38 by rlamlaik          #+#    #+#             */
+/*   Updated: 2025-10-16 12:12:38 by rlamlaik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
 
 void	ft_putchar(char c)
@@ -10,7 +22,7 @@ void	ft_putnbr(int n)
 	if (n == -2147483648)
 	{
 		write(1, "-2147483648", 11);
-		return;
+		return ;
 	}
 	if (n < 0)
 	{
@@ -22,88 +34,77 @@ void	ft_putnbr(int n)
 	ft_putchar((n % 10) + '0');
 }
 
-void move_player(t_game *game, double dx, double dy)
+void	move_player(t_game *game, double dx, double dy)
 {
-    double new_x = game->player.x + (dx / TILE_SIZE) * MOVE_SPEED;
-    double new_y = game->player.y + (dy / TILE_SIZE) * MOVE_SPEED;
+	double	new_x;
+	double	new_y;
+	int		map_y;
+	int		map_x;
+	int		curr_map_x;
+	int		curr_map_y;
 
-    int map_x = (int)new_x;
-    int map_y = (int)new_y;
-
-    int curr_map_x = (int)game->player.x;
-    int curr_map_y = (int)game->player.y;
-
-    if (map_x < 0 || map_y < 0 || map_x >= game->map_width || map_y >= game->map_height)
-        return;
-
-    if  (game->map[map_y][map_x] == 'D' &&
-        game->map[curr_map_y][map_x] == 'D' &&
-        game->map[map_y][curr_map_x] == 'D')
-        {
-            printf("wtf\n");
-            return ;
-        }
-    if ((game->map[map_y][map_x] == '1' &&
-        game->map[curr_map_y][map_x] == '1' &&
-        game->map[map_y][curr_map_x] == '1' ))
-    {
-        return;
-    }
-    if ((game->map[map_y][map_x] == ' ' &&
-        game->map[curr_map_y][map_x] == ' ' &&
-        game->map[map_y][curr_map_x] == ' ')
-       )
-    {
-        return;
-    }
-    if (game->map[curr_map_y ][map_x] != '1' && game->map[curr_map_y ][map_x] != ' ')
-        game->player.x = new_x;
-
-    if (game->map[map_y ][curr_map_x] != '1' && game->map[map_y ][curr_map_x] != ' ') 
-        game->player.y = new_y;
+	new_x = game->player.x + (dx / TILE_SIZE) * MOVE_SPEED;
+	new_y = game->player.y + (dy / TILE_SIZE) * MOVE_SPEED;
+	map_x = (int)new_x;
+	map_y = (int)new_y;
+	curr_map_x = (int)game->player.x;
+	curr_map_y = (int)game->player.y;
+	if (map_x < 0 || map_y < 0 || map_x >= game->map_width || map_y >= game->map_height)
+		return ;
+	if (game->map[map_y][map_x] == '1' ||
+		game->map[curr_map_y][map_x] == '1' ||
+		game->map[map_y][curr_map_x] == '1')
+		return ;
+	if (game->map[map_y][map_x] == ' ' ||
+		game->map[curr_map_y][map_x] == ' ' ||
+		game->map[map_y][curr_map_x] == ' ')
+		return ;
+	if (game->map[curr_map_y][map_x] != '1' && game->map[map_y][curr_map_x] != '1')
+	{
+		game->player.y = new_y;
+		game->player.x = new_x;
+	}
 }
 
-int bottoms(int keycode, t_game *game)
+int	bottoms(int keycode, t_game *game)
 {
-    double dx = 0.0;
-    double dy = 0.0;
+	double	dx;
+	double	dy;
 
-    if (keycode == LEFT)
-        game->angle -= ROTATION_SPEED;
-    else if (keycode == RIGHT)
-        game->angle += ROTATION_SPEED;
-
-    if (game->angle < 0)
-        game->angle += 2.0 * M_PI;
-    if (game->angle >= 2.0 * M_PI)
-        game->angle -= 2.0 * M_PI;
-
-    if (keycode == KEY_W) 
-    {
-        dx = cos(game->angle);
-        dy = sin(game->angle);
-    }
-    if (keycode == KEY_S)
-    {
-        dx = -cos(game->angle);
-        dy = -sin(game->angle);
-    }
-    if (keycode == KEY_D)
-    {
-        dx = -sin(game->angle);
-        dy =  cos(game->angle);
-    } if (keycode == KEY_A)
-    {
-        dx =  sin(game->angle);
-        dy = -cos(game->angle);
-    }if (keycode == 49)
-        game->frame = 1;
-    if (keycode == 53) {
-        exit(0);
-    }
-    move_player(game, dx, dy);
-    mlx_clear_window(game->helper->mlx, game->helper->win);
-    game_gun(game);
-    return 0;
+	dy = 0.0;
+	dx = 0.0;
+	if (keycode == LEFT)
+		game->angle -= ROTATION_SPEED;
+	else if (keycode == RIGHT)
+		game->angle += ROTATION_SPEED;
+	if (game->angle < 0)
+		game->angle += 2.0 * M_PI;
+	if (game->angle >= 2.0 * M_PI)
+		game->angle -= 2.0 * M_PI;
+	if (keycode == KEY_W)
+	{
+		dx = cos(game->angle);
+		dy = sin(game->angle);
+	}
+	if (keycode == KEY_S)
+	{
+		dx = -cos(game->angle);
+		dy = -sin(game->angle);
+	}
+	if (keycode == KEY_D)
+	{
+		dx = -sin(game->angle);
+		dy = cos(game->angle);
+	}
+	if (keycode == KEY_A)
+	{
+		dx = sin(game->angle);
+		dy = -cos(game->angle);
+	}
+	if (keycode == 53)
+		exit(0);
+	move_player(game, dx, dy);
+	mlx_clear_window(game->helper->mlx, game->helper->win);
+	game_gun(game);
+	return (0);
 }
-

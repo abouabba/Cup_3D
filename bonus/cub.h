@@ -66,13 +66,7 @@ typedef struct s_malloc
 	struct s_malloc	*next;
 }					t_malloc;
 
-typedef struct s_loopvars
-{
-	int line_height;
-	int draw_start;
-	int draw_end;
-	int color;
-}				t_loopvars;
+
 
 
 typedef struct s_txtu
@@ -85,7 +79,14 @@ typedef struct s_txtu
 	int		height;
 	int		line_len;
 }	t_txtu;
-
+typedef struct s_loopvars
+{
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int color;
+	t_txtu *texture;
+}				t_loopvars;
 
 typedef struct s_textures {
 	char	*north;
@@ -108,6 +109,8 @@ typedef struct s_line {
 	char			*line;
 	struct s_line	*next;
 }	t_line;
+
+
 
 
 typedef struct s_ray
@@ -185,6 +188,21 @@ typedef struct s_casting
     int     step_y;
 }   t_casting;
 
+
+
+typedef struct s_texthelper
+{
+	int				tex_width;
+	int				tex_height;
+	double			wall_x;
+	double			step;
+	double			tex_pos;
+	int				tex_x;
+	int				y;
+	int				x;
+
+}				t_texthelper;
+
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);
 void	init_game_struct(t_game *game);
@@ -231,4 +249,6 @@ int		game_gun(t_game *game);
 void    load_gun_sprite(t_game *game);
 int		mouse_move_hook(int x, int y, t_game *game);
 void	draw_minimap(t_game *game);
+void	init_player_direction(t_game *game, char dir);
+
 #endif

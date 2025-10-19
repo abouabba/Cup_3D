@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rlamlaik <rlamlaik@student.42.fr>          #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/15 12:22:11 by rlamlaik          #+#    #+#             */
-/*   Updated: 2025/10/15 22:13:08 by abouabba         ###   ########.fr       */
+/*   Created: 2025-10-15 12:22:11 by rlamlaik          #+#    #+#             */
+/*   Updated: 2025-10-15 12:22:11 by rlamlaik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void init_game(t_game *game)
+void	init_game(t_game *game)
 {
 	game->helper = ft_malloc(sizeof(t_mlx), 1);
 	game->player.c_count = 0;
@@ -25,22 +25,24 @@ void init_game(t_game *game)
 	game->helper->addr = mlx_get_data_addr(game->helper->img, &game->helper->bpp, &game->helper->line_len, &game->helper->endian);
 }
 
-int close_window(t_game *game)
+int	close_window(t_game *game)
 {
 	(void)game;
-	// need to free all of the 
+	ft_malloc (42, 0);
 	exit(0);
 }
 
-void my_mlx_pixel_put(t_game *game, int x, int y, int color)
+void	my_mlx_pixel_put(t_game *game, int x, int y, int color)
 {
+	char	*dst;
+
 	if (x < 0 || y < 0 || x >= game->map_width * TILE_SIZE || y >= game->map_height * TILE_SIZE)
-		return;
-	char *dst = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
+		return ;
+	dst = game->helper->addr + (y * game->helper->line_len + x * (game->helper->bpp / 8));
 	*(unsigned int *)dst = color;
 }
 
-int  render_map(t_game *game)
+int	render_map(t_game *game)
 {
 	mlx_destroy_image(game->helper->mlx, game->helper->img);
 	mlx_clear_window(game->helper->addr, game->helper->win);
@@ -52,4 +54,3 @@ int  render_map(t_game *game)
 	mlx_put_image_to_window(game->helper->mlx, game->helper->win, game->helper->img, 0, 0);
 	return (1);
 }
-
