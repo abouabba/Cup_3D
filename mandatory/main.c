@@ -13,11 +13,13 @@ t_txtu	init_txtu(t_game *game, char *file)
 {
 	t_txtu	txtu;
 
+	if (file == NULL)
+		return (printf("passing in NULL file \n"), exit(1), txtu);
+	file[ft_strlen(file) - 1] = '\0';
 	if (access(file, F_OK))
 	{
-		printf(" wrong: %s\n", file);
+		printf("wrong access: |%s|\n", file);
 		exit(1);
-
 	}
 	txtu.txture_p = mlx_xpm_file_to_image(game->helper->addr, file, &txtu.width , &txtu.height);
 	if  (!txtu.txture_p )
@@ -29,6 +31,21 @@ t_txtu	init_txtu(t_game *game, char *file)
 	return txtu;
 }
 
+void hookshandeling(t_game *game)
+{
+	is_valid_texture(game);
+	finalize_map(game);
+	validate_map(game);
+	init_game(game);
+	game->txtu[0] = init_txtu(game, game->textures.east);
+	game->txtu[1] = init_txtu(game, game->textures.north);
+	game->txtu[2] = init_txtu(game, game->textures.south);
+	game->txtu[3] = init_txtu(game, game->textures.west);
+	mlx_hook(game->helper->win, 17, 0, close_window, game);
+	mlx_loop_hook(game->helper->mlx,&render_map, game);
+	mlx_hook(game->helper->win, 2, 1, bottoms, game);
+	mlx_loop(game->helper->mlx);
+}
 
 int	main(int ac, char **av)
 {
@@ -37,52 +54,25 @@ int	main(int ac, char **av)
 	char	*line;
 
 	check_argument(ac, av);
-
-	game = malloc(sizeof(t_game));
+	game = ft_malloc(sizeof(t_game), 1);
 	if (!game)
 	{
 		perror("Error\n<----!Memory allocation failed---->");
 		exit(1);
 	}
 	init_game_struct(game);
-
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
 	{
 		perror("Error\n<----!Can't open file---->");
 		exit(1);
 	}
-
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		parse_line(game, line);
 		free(line);
 	}
 	close(fd);
-
-	// Next steps would be:
-	is_valid_texture(game);
-	finalize_map(game);
-	// print_map(game->map);
-	validate_map(game);
-	// and parse the map in file map.cub in function validate_map
-
-	// rayn's part's 3d_view
-	init_game(game);
-	int i = 0;
-	game->txt = ft_split("east.xpm  north.xpm south.xpm west.xpm", ' ');
-	
-	while (i < 4)
-	{
-		char *uuu= ft_strjoin(ft_strdup("textures/"), game->txt[i]);
-		printf("%s\n", uuu);
-		game->txtu[i] = init_txtu(game, uuu);
-		i++;
-	}
-	mlx_hook(game->helper->win, 17, 0, close_window, game);
-	mlx_loop_hook(game->helper->mlx,&render_map, game);
-	
-	mlx_hook(game->helper->win, 2, 1, bottoms, game);
-	mlx_loop(game->helper->mlx);
-	return (0);
+	return (hookshandeling(game), 0);
 }
+

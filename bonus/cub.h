@@ -34,7 +34,7 @@
 
 # define TWO_PI 6.28318530718
 
-#define MOVE_SPEED 37
+#define MOVE_SPEED 28
 #define ROTATION_SPEED 0.08
 
 
@@ -42,6 +42,9 @@
 # define WEST_TEXTURE 1
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
+# define DOOR_TEXTURE 4
+// # define DOOR_COLOR 0x6B4226 // brown if you want a solid color
+# define DOOR 'D'
 
 
 
@@ -62,7 +65,6 @@ typedef struct s_malloc
 	void			*toalloc;
 	struct s_malloc	*next;
 }					t_malloc;
-
 
 typedef struct s_loopvars
 {
@@ -181,7 +183,7 @@ typedef struct s_casting
     double  side_dist_y;
     int     step_x;
     int     step_y;
-}   t_casting;  
+}   t_casting;
 
 // ---- Function prototypes ----
 void	check_argument(int ac, char **av);

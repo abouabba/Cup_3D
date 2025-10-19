@@ -21,20 +21,39 @@ void	ft_putnbr(int n)
 		ft_putnbr(n / 10);
 	ft_putchar((n % 10) + '0');
 }
+
 void move_player(t_game *game, double dx, double dy)
 {
-    double new_x = game->player.x + (dx / TILE_SIZE) *MOVE_SPEED;
-    double new_y = game->player.y + (dy / TILE_SIZE)* MOVE_SPEED;
+    double new_x = game->player.x + (dx / TILE_SIZE ) * MOVE_SPEED;
+    double new_y = game->player.y + (dy / TILE_SIZE ) * MOVE_SPEED;
 
-    int map_x = (int)new_x;
-    int map_y = (int)new_y;
+    int map_x = (int)new_x ;
+    int map_y = (int)new_y ;
 
-    printf("this is the next DX|%f|   DY|%f|\n", new_x, new_y);
-    if (game->map[map_y][map_x] != '1') // check wall
+    int curr_map_x = (int)game->player.x;
+    int curr_map_y = (int)game->player.y;
+
+    if (map_x < 0 || map_y < 0 || map_x >= game->map_width || map_y >= game->map_height)
+        return;
+
+    if (game->map[map_y][map_x] == '1' &&
+        game->map[curr_map_y][map_x] == '1' &&
+        game->map[map_y][curr_map_x] == '1')
+    {
+        return;
+    }
+    if (game->map[map_y][map_x] == ' ' &&
+        game->map[curr_map_y][map_x] == ' ' &&
+        game->map[map_y][curr_map_x] == ' ')
+    {
+        return;
+    }
+    if (game->map[curr_map_y ][map_x] != '1' && game->map[curr_map_y ][map_x] != ' ' && game->map[map_y ][curr_map_x] != '1' && game->map[map_y ][curr_map_x] != ' ')
     {
         game->player.x = new_x;
         game->player.y = new_y;
-    }
+    }    
+
 }
 
 
@@ -54,27 +73,29 @@ int bottoms(int keycode, t_game *game)
         game->angle -= 2.0 * M_PI;
 
     if (keycode == KEY_W) 
-	{
+    {
         dx = cos(game->angle);
         dy = sin(game->angle);
     }
-	if (keycode == KEY_S) { // backward
+    if (keycode == KEY_S)
+    {
         dx = -cos(game->angle);
         dy = -sin(game->angle);
-    } if (keycode == KEY_D) { // strafe left
+    }
+    if (keycode == KEY_D)
+    {
         dx = -sin(game->angle);
         dy =  cos(game->angle);
-    } if (keycode == KEY_A) { // strafe right
+    } if (keycode == KEY_A)
+    {
         dx =  sin(game->angle);
         dy = -cos(game->angle);
     } if (keycode == 53) {
         exit(0);
     }
-
     move_player(game, dx, dy);
     mlx_clear_window(game->helper->mlx, game->helper->win);
-    // segfault
     render_map(game);
-
     return 0;
 }
+

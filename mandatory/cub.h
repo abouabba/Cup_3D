@@ -34,14 +34,32 @@
 
 # define TWO_PI 6.28318530718
 
-#define MOVE_SPEED 10
-#define ROTATION_SPEED 0.03
+#define MOVE_SPEED 37
+#define ROTATION_SPEED 0.08
 
 
 # define EAST_TEXTURE 3
 # define WEST_TEXTURE 1
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
+
+
+
+typedef struct s_malloc
+{
+	void			*toalloc;
+	struct s_malloc	*next;
+}					t_malloc;
+
+
+typedef struct s_loopvars
+{
+	int line_height;
+	int draw_start;
+	int draw_end;
+	int color;
+}				t_loopvars;
+
 
 typedef struct s_txtu
 {
@@ -184,6 +202,7 @@ int 	render_map(t_game *game);
 void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
 int 	bottoms(int keycode, t_game *game);
 void    the_3dview(t_game *game);
+void	*ft_malloc(unsigned int size, int flag);
 
 
 #endif

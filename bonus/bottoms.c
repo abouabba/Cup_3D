@@ -36,15 +36,23 @@ void move_player(t_game *game, double dx, double dy)
     if (map_x < 0 || map_y < 0 || map_x >= game->map_width || map_y >= game->map_height)
         return;
 
-    if (game->map[map_y][map_x] == '1' &&
+    if  (game->map[map_y][map_x] == 'D' &&
+        game->map[curr_map_y][map_x] == 'D' &&
+        game->map[map_y][curr_map_x] == 'D')
+        {
+            printf("wtf\n");
+            return ;
+        }
+    if ((game->map[map_y][map_x] == '1' &&
         game->map[curr_map_y][map_x] == '1' &&
-        game->map[map_y][curr_map_x] == '1')
+        game->map[map_y][curr_map_x] == '1' ))
     {
         return;
     }
-    if (game->map[map_y][map_x] == ' ' &&
+    if ((game->map[map_y][map_x] == ' ' &&
         game->map[curr_map_y][map_x] == ' ' &&
         game->map[map_y][curr_map_x] == ' ')
+       )
     {
         return;
     }
@@ -54,7 +62,6 @@ void move_player(t_game *game, double dx, double dy)
     if (game->map[map_y ][curr_map_x] != '1' && game->map[map_y ][curr_map_x] != ' ') 
         game->player.y = new_y;
 }
-
 
 int bottoms(int keycode, t_game *game)
 {

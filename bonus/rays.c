@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 08:55:50 by rlamlaik          #+#    #+#             */
-/*   Updated: 2025/10/15 22:31:13 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/19 14:05:46 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_casting	*loop_helper(t_game *game, t_ray *ray, t_casting *holder)
 			ray->map_y += holder->step_y;
 			holder->side = 1;
 		}
-		if (game->map[ray->map_y][ray->map_x] == '1')
+		if (game->map[ray->map_y][ray->map_x] == '1' || game->map[ray->map_y][ray->map_x] == ' ')
 			holder->hited = 1;
 	}
 	return (holder);
@@ -247,9 +247,14 @@ void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars	*vars)
 	}
 }
 
-int	texture_side(t_ray ray)
+
+
+int	texture_side(t_game *game, t_ray ray)
 {
-	int index;
+	int	index;
+
+	if (game->map[ray.map_y][ray.map_x] == 'D')
+		return (DOOR_TEXTURE);
 
 	index = 0;
 	if (ray.side == 0)
@@ -297,7 +302,7 @@ int	loophandeler(t_casting	*holder, t_game *game)
 		double distance = dist * cos(ray.ray_angle - game->angle);
 		ray.perp_wall_dist = distance;
 		varsinit(vars, distance, holder);
-		texture_index = texture_side(ray);
+		texture_index = texture_side(game, ray);
 		game->ray = ray;
 		int color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
 		// draw_floor_and_ceiling(game, i_loop , vars);

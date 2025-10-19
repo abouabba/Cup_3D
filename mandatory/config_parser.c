@@ -24,7 +24,7 @@ void	parse_config_line(t_game *game, char *line)
 		game->no++;
 	}
 	else if (ft_strncmp(line, "SO ", 3) == 0)
-	{	
+	{
 		game->textures.south = ft_strdup(line + 3);
 		game->so++;
 	}
