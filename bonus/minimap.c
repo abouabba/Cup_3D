@@ -12,71 +12,112 @@
 
 #include "cub.h"
 
-void	draw_square(t_game *game, int x, int y, int size, int color)
+void    draw_clipped_square(t_game *game, int x, int y, int size, int color)
 {
-	for (int i = 0; i < size; i++)
-	{
-		for (int j = 0; j < size; j++)
-		{
-			my_mlx_pixel_put(game, x + j, y + i, color);
-		}
-	}
+    int i, j;
+    int draw_start_x, draw_start_y;
+    int draw_end_x, draw_end_y;
+
+    int clip_x_min = MINIMAP_OFFSET_X + 1;
+    int clip_y_min = MINIMAP_OFFSET_Y + 1;
+    int clip_x_max = MINIMAP_OFFSET_X + MINIMAP_SIZE - 1;
+    int clip_y_max = MINIMAP_OFFSET_Y + MINIMAP_SIZE - 1;
+
+    draw_start_x = (x > clip_x_min) ? x : clip_x_min;
+    draw_start_y = (y > clip_y_min) ? y : clip_y_min;
+
+    draw_end_x = (x + size < clip_x_max) ? (x + size) : clip_x_max;
+    draw_end_y = (y + size < clip_y_max) ? (y + size) : clip_y_max;
+
+    for (i = draw_start_y; i < draw_end_y; i++)
+    {
+        for (j = draw_start_x; j < draw_end_x; j++)
+        {
+            my_mlx_pixel_put(game, j, i, color);
+        }
+    }
 }
 
 static void draw_minimap_frame(t_game *game)
 {
-	int frame_x = MINIMAP_OFFSET_X;
-	int frame_y = MINIMAP_OFFSET_Y;
-	int size = MINIMAP_SIZE;
+    int i;
+    int frame_x = MINIMAP_OFFSET_X;
+    int frame_y = MINIMAP_OFFSET_Y;
+    int size = MINIMAP_SIZE;
 
-	for (int y = 0; y < size; y++)
-	{
-		for (int x = 0; x < size; x++)
-		{
-			if (x == 0 || y == 0 || x == size - 1 || y == size - 1)
-				my_mlx_pixel_put(game, frame_x + x, frame_y + y, FRAME_COLOR);
-		}
-	}
+    // Draw top and bottom horizontal lines
+    for (i = 0; i < size; i++)
+    {
+        my_mlx_pixel_put(game, frame_x + i, frame_y, FRAME_COLOR);
+        my_mlx_pixel_put(game, frame_x + i, frame_y + size - 1, FRAME_COLOR);
+    }
+    
+    // Draw left and right vertical lines (skip corners, already drawn)
+    for (i = 1; i < size - 1; i++)
+    {
+        my_mlx_pixel_put(game, frame_x, frame_y + i, FRAME_COLOR);
+        my_mlx_pixel_put(game, frame_x + size - 1, frame_y + i, FRAME_COLOR);
+    }
 }
+
 
 void draw_minimap(t_game *game)
 {
-	draw_minimap_frame(game);
+    draw_minimap_frame(game); // Call optimized function
 
-	double player_x = game->player.x;
-	double player_y = game->player.y;
+    double player_x = game->player.x;
+    double player_y = game->player.y;
 
-	int tiles_visible = MINIMAP_SIZE / MINIMAP_TILE_SIZE;
+    // Calculate map coordinates for the top-left corner of the minimap
+    // Using 2.0 ensures floating-point division
+    double start_x = player_x - (MINIMAP_SIZE / (2.0 * MINIMAP_TILE_SIZE));
+    double start_y = player_y - (MINIMAP_SIZE / (2.0 * MINIMAP_TILE_SIZE));
+    
+    // Calculate map coordinates for the bottom-right (for loop boundary)
+    double end_x = start_x + (MINIMAP_SIZE / (double)MINIMAP_TILE_SIZE);
+    double end_y = start_y + (MINIMAP_SIZE / (double)MINIMAP_TILE_SIZE);
 
-	int start_x = (int)(player_x - tiles_visible / 2);
-	int start_y = (int)(player_y - tiles_visible / 2);
-	int end_x = start_x + tiles_visible;
-	int end_y = start_y + tiles_visible;
+    for (int map_y = (int)start_y; map_y < (int)end_y + 1; map_y++)
+    {
+        for (int map_x = (int)start_x; map_x < (int)end_x + 1; map_x++)
+        {
+            if (map_y < 0 || map_y >= game->map_height ||
+                map_x < 0 || map_x >= game->map_width)
+                continue; // Skip out-of-bounds map tiles
 
-	for (int map_y = start_y; map_y < end_y; map_y++)
-	{
-		for (int map_x = start_x; map_x < end_x; map_x++)
-		{
-			if (map_y < 0 || map_y >= game->map_height ||
-				map_x < 0 || map_x >= game->map_width)
-				continue;
+            char tile = game->map[map_y][map_x];
+            int color;
 
-			char tile = game->map[map_y][map_x];
-			int color;
+            if (tile == '1')
+                color = WALL_COLOR;
+            else if (tile == 'D') // door
+                color = 0x808000;
+            else
+                color = FLOOR_COLOR; // Includes '0', 'N', 'S', etc.
 
-			if (tile == '1')
-				color = WALL_COLOR;
-			else if (tile == 'D')
-				color = 0x808000;
-			else
-				color = FLOOR_COLOR;
-			int draw_x = MINIMAP_OFFSET_X + (map_x - start_x) * MINIMAP_TILE_SIZE;
-			int draw_y = MINIMAP_OFFSET_Y + (map_y - start_y) * MINIMAP_TILE_SIZE;
+            // Calculate screen position for the top-left of this tile
+            int draw_x = MINIMAP_OFFSET_X + (int)((map_x - start_x) * MINIMAP_TILE_SIZE);
+            int draw_y = MINIMAP_OFFSET_Y + (int)((map_y - start_y) * MINIMAP_TILE_SIZE);
 
-			draw_square(game, draw_x, draw_y, MINIMAP_TILE_SIZE, color);
-		}
-	}
-	int player_screen_x = MINIMAP_OFFSET_X + (MINIMAP_SIZE / 2);
-	int player_screen_y = MINIMAP_OFFSET_Y + (MINIMAP_SIZE / 2);
-	draw_square(game, player_screen_x - 2, player_screen_y - 2, 4, PLAYER_COLOR);
+            // Draw the tile, the function will handle clipping
+            // This REPLACES your buggy 'if' condition
+            draw_clipped_square(game, draw_x, draw_y, MINIMAP_TILE_SIZE, color);
+        }
+    }
+
+    // Draw player at center
+    int player_screen_x = MINIMAP_OFFSET_X + (MINIMAP_SIZE / 2);
+    int player_screen_y = MINIMAP_OFFSET_Y + (MINIMAP_SIZE / 2);
+
+    if (game->map[(int)player_y][(int)player_x] != '1' &&
+        game->map[(int)player_y][(int)player_x] != ' ')
+    {
+        // Draw a 4x4 player dot, centered on the player's exact spot
+        // This will also be correctly clipped by the new function
+        draw_clipped_square(game,
+            player_screen_x - 2,
+            player_screen_y - 2,
+            4,
+            PLAYER_COLOR);
+    }
 }
