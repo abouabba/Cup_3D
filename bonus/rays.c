@@ -35,35 +35,48 @@ t_casting	*loop_helper(t_game *game, t_ray *ray, t_casting *holder)
 	return (holder);
 }
 
-double	cast_dda(t_game *game, t_ray *ray, t_casting *holder)
+void	move_side_dda(t_ray *ray, t_casting *holder)
 {
-	double	dist_to_wall;
-
 	if (ray->ray_dir_x < 0)
 	{
 		holder->step_x = -1;
-		holder->side_dist_x = (ray->ray_x / TILE_SIZE - ray->map_x) * ray->delta_dist_x;
+		holder->side_dist_x = \
+		(ray->ray_x / TILE_SIZE - ray->map_x) * ray->delta_dist_x;
 	}
 	else
 	{
 		holder->step_x = 1;
-		holder->side_dist_x = (ray->map_x + 1.0 - ray->ray_x / TILE_SIZE) * ray->delta_dist_x;
+		holder->side_dist_x = \
+		(ray->map_x + 1.0 - ray->ray_x / TILE_SIZE) * ray->delta_dist_x;
 	}
 	if (ray->ray_dir_y < 0)
 	{
 		holder->step_y = -1;
-		holder->side_dist_y = (ray->ray_y / TILE_SIZE - ray->map_y) * ray->delta_dist_y;
+		holder->side_dist_y = \
+		(ray->ray_y / TILE_SIZE - ray->map_y) * ray->delta_dist_y;
 	}
 	else
 	{
 		holder->step_y = 1;
-		holder->side_dist_y = (ray->map_y + 1.0 - ray->ray_y / TILE_SIZE) * ray->delta_dist_y;
+		holder->side_dist_y = \
+		(ray->map_y + 1.0 - ray->ray_y / TILE_SIZE) * ray->delta_dist_y;
 	}
+}
+
+double	cast_dda(t_game *game, t_ray *ray, t_casting *holder)
+{
+	double	dist_to_wall;
+
+	move_side_dda(ray, holder);
 	holder = loop_helper(game, ray, holder);
 	if (holder->side == 0)
-		dist_to_wall = (ray->map_x * TILE_SIZE - ray->ray_x + (1 - holder->step_x) * TILE_SIZE / 2) / ray->ray_dir_x;
+		dist_to_wall = \
+		(ray->map_x * TILE_SIZE - ray->ray_x + \
+		(1 - holder->step_x) * TILE_SIZE / 2) / ray->ray_dir_x;
 	else
-		dist_to_wall = (ray->map_y * TILE_SIZE - ray->ray_y + (1 - holder->step_y) * TILE_SIZE / 2) / ray->ray_dir_y;
+		dist_to_wall = \
+		(ray->map_y * TILE_SIZE - ray->ray_y + \
+		(1 - holder->step_y) * TILE_SIZE / 2) / ray->ray_dir_y;
 	ray->perp_wall_dist = dist_to_wall;
 	ray->side = holder->side;
 	ray->hit_x = ray->ray_x + ray->ray_dir_x * dist_to_wall;
@@ -91,20 +104,22 @@ t_ray	prepare_vars(t_ray ray, t_game *game, int i_loop)
 	start_angle = normalize_angle(game->angle - fov / 2);
 	ray.ray_angle = normalize_angle(start_angle + i_loop * angle_step);
 	ray.ray_x = ((game->player.x) * TILE_SIZE);
-	ray.ray_y  = ((game->player.y) * TILE_SIZE);
+	ray.ray_y = ((game->player.y) * TILE_SIZE);
 	ray.ray_dir_x = cos(ray.ray_angle);
 	ray.ray_dir_y = sin(ray.ray_angle);
 	ray.map_x = (int)(ray.ray_x / TILE_SIZE);
 	ray.map_y = (int)(ray.ray_y / TILE_SIZE);
-	ray.delta_dist_x = (fabs(ray.ray_dir_x) < 1e-6) ? 1e30 : fabs(1 / ray.ray_dir_x);
-	ray.delta_dist_y = (fabs(ray.ray_dir_y) < 1e-6) ? 1e30 : fabs(1 / ray.ray_dir_y);
+	ray.delta_dist_x = fabs(1 / ray.ray_dir_x);
+	ray.delta_dist_y = fabs(1 / ray.ray_dir_y);
 	return (ray);
 }
 
-void texture_loop(t_loopvars *vars ,t_game *game, t_ray ray, t_texthelper *helper)
+void	texture_loop(t_loopvars*vars, t_game*game, \
+t_ray ray, t_texthelper*helper)
 {
 	unsigned int	color;
 	int				tex_y;
+	char			*pixel;
 
 	while (helper->y <= vars->draw_end)
 	{
@@ -114,17 +129,19 @@ void texture_loop(t_loopvars *vars ,t_game *game, t_ray ray, t_texthelper *helpe
 		else if (tex_y >= helper->tex_height)
 			tex_y = helper->tex_height - 1;
 		helper->tex_pos += helper->step;
-		char	*pixel = vars->texture->data_add + tex_y * vars->texture->line_len + helper->tex_x * (vars->texture->bbp / 8);
+		pixel = vars->texture->data_add + \
+	tex_y * vars->texture->line_len + helper->tex_x * (vars->texture->bbp / 8);
 		color = *(unsigned int *)pixel;
 		if (ray.side == 1)
 			color = (color >> 1) & 0x7F7F7F;
-		pixel = game->helper->addr + (helper->y * game->helper->line_len + helper->x * (game->helper->bpp / 8));
+		pixel = game->helper->addr + \
+	(helper->y * game->helper->line_len + helper->x * (game->helper->bpp / 8));
 		*(unsigned int *)pixel = color;
 		helper->y++;
 	}
 }
 
-void	texture_pass(t_game *game, int x,t_ray ray, t_loopvars *vars)
+void	texture_pass(t_game *game, int x, t_ray ray, t_loopvars *vars)
 {
 	t_texthelper	*helper;
 
@@ -142,10 +159,12 @@ void	texture_pass(t_game *game, int x,t_ray ray, t_loopvars *vars)
 	else
 		helper->wall_x = ray.hit_x / TILE_SIZE - floor(ray.hit_x / TILE_SIZE);
 	helper->tex_x = (int)(helper->wall_x * helper->tex_width);
-	if ((ray.side == 0 && ray.ray_dir_x > 0) || (ray.side == 1 && ray.ray_dir_y < 0))
+	if ((ray.side == 0 && ray.ray_dir_x > 0) || \
+	(ray.side == 1 && ray.ray_dir_y < 0))
 		helper->tex_x = helper->tex_width - helper->tex_x - 1;
 	helper->step = (double)helper->tex_height / (double)vars->line_height;
-	helper->tex_pos = (vars->draw_start - SCREEN_HEIGHT / 2 + vars->line_height / 2) * helper->step;
+	helper->tex_pos = (vars->draw_start - \
+	SCREEN_HEIGHT / 2 + vars->line_height / 2) * helper->step;
 	helper->y = vars->draw_start;
 	helper->x = x;
 	texture_loop(vars, game, ray, helper);
@@ -179,7 +198,7 @@ void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars)
 		*(unsigned int *)(addr + yyx * stride + x * bpp_bytes) = game->ceiling_color;
 		++yyx;
 	}
-	while (y < (SCREEN_HEIGHT + 1))
+	while (y < (SCREEN_HEIGHT))
 	{
 		*(unsigned int *)(addr + y * stride + x * bpp_bytes) = game->floor_color;
 		y++;
@@ -211,9 +230,12 @@ int	texture_side(t_ray ray)
 void	varsinit(t_loopvars *vars, double distance, t_casting *holder)
 {
 	vars->line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
-	vars->draw_start = - vars->line_height / 2 + SCREEN_HEIGHT / 2;
+	vars->draw_start = -vars->line_height / 2 + SCREEN_HEIGHT / 2;
 	vars->draw_end = vars->line_height / 2 + SCREEN_HEIGHT / 2;
-	vars->color = (holder->side == 1) ? 0xAAAAAA : 0xFFFFFF;
+	if (holder->side == 1)
+		vars->color = 0xAAAAAA;
+	else
+		vars->color = 0xFFFFFF;
 	if (vars->draw_start < 0)
 		vars->draw_start = 0;
 	if (vars->draw_end >= SCREEN_HEIGHT)

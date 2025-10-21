@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlamlaik <rlamlaik@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-10-21 05:28:43 by rlamlaik          #+#    #+#             */
+/*   Updated: 2025-10-21 05:28:43 by rlamlaik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB_H
 # define CUB_H
 
@@ -12,7 +24,7 @@
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42 
-#endif
+# endif
 
 # define FOV 60.0 * (M_PI / 180)
 # define ROTATE_SPEED 3
@@ -29,15 +41,12 @@
 # define DOWN 125      // Down arrow
 # define RIGHT 124     // Right arrow
 # define LEFT 123      // Left arrow
-// # define TILE_P 8
 # define TILE_SIZE 60
 
 # define TWO_PI 6.28318530718
 
-#define MOVE_SPEED 28
-#define ROTATION_SPEED 0.08
-
-
+# define MOVE_SPEED 28
+# define ROTATION_SPEED 0.08
 # define EAST_TEXTURE 3
 # define WEST_TEXTURE 1
 # define SOUTH_TEXTURE 2
@@ -46,19 +55,17 @@
 // # define DOOR_COLOR 0x6B4226 // brown if you want a solid color
 # define DOOR 'D'
 
+# define MINIMAP_SIZE 150
+# define MINIMAP_TILE_SIZE 8
+# define MINIMAP_OFFSET_X 30
+# define MINIMAP_OFFSET_Y 30
+# define FRAME_COLOR 0x555555
+# define WALL_COLOR 0x800000
+# define FLOOR_COLOR 0x000000
+# define PLAYER_COLOR 0x00FF00
 
-
-#define MINIMAP_SIZE 150
-#define MINIMAP_TILE_SIZE 8
-#define MINIMAP_OFFSET_X 30
-#define MINIMAP_OFFSET_Y 30
-#define FRAME_COLOR 0x555555
-#define WALL_COLOR 0x800000
-#define FLOOR_COLOR 0x000000
-#define PLAYER_COLOR 0x00FF00
-
-#define MINIMAP_X 20
-#define MINIMAP_Y 20
+# define MINIMAP_X 20
+# define MINIMAP_Y 20
 
 typedef struct s_malloc
 {
@@ -79,6 +86,7 @@ typedef struct s_txtu
 	int		height;
 	int		line_len;
 }	t_txtu;
+
 typedef struct s_loopvars
 {
 	int line_height;
@@ -110,27 +118,24 @@ typedef struct s_line {
 	struct s_line	*next;
 }	t_line;
 
-
-
-
 typedef struct s_ray
 {
-    double ray_x;
-    double ray_y;
-    double ray_angle; // allready exist
-    double ray_dir_x;
-    double ray_dir_y;
-    double delta_dist_x;
-    double delta_dist_y;
-    int map_x;
-    int map_y;
-	double perp_wall_dist;
-	double hit_x;
-	double hit_y;
-	double side;
-} t_ray;
+	double	ray_x;
+	double	ray_y;
+	double	ray_angle;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	int		map_x;
+	int		map_y;
+	double	perp_wall_dist;
+	double	hit_x;
+	double	hit_y;
+	double	side;
+}			t_ray;
 
-typedef  struct s_mlx
+typedef struct s_mlx
 {
 	void	*mlx;
 	void	*win;
@@ -147,7 +152,7 @@ typedef struct s_sprite
 	char	*img;
 	int		width;
 	int		height;
-} t_sprite;
+}			t_sprite;
 
 typedef struct s_game 
 {
@@ -175,19 +180,18 @@ typedef struct s_game
 	t_sprite	gun[17];
 	int			frame;
 	int			flage;
-}	t_game;
+}				t_game;
 
 typedef struct s_casting
 {
-	double 	dist;
-    int     hited;
-    int     side;
-    double  side_dist_x;
-    double  side_dist_y;
-    int     step_x;
-    int     step_y;
-}   t_casting;
-
+	double	dist;
+	int		hited;
+	int		side;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		step_x;
+	int		step_y;
+}			t_casting;
 
 
 typedef struct s_texthelper
@@ -214,8 +218,8 @@ void	save_map_line(t_game *game, char *line);
 int		in_valid_ber_file(char *file_name);
 void	parse_config_line(t_game *game, char *line);
 int		parse_color(char *line);
-void    finalize_map(t_game *game);
-void 	print_map(char **map);
+void	finalize_map(t_game *game);
+void	print_map(char **map);
 void	validate_map(t_game *game);
 void	print_error(const char *message);
 
@@ -238,17 +242,17 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 
 //reyn's part
-void 	init_game(t_game *game);
-int 	close_window(t_game *game);
-int 	render_map(t_game *game);
-void 	my_mlx_pixel_put(t_game *game, int x, int y, int color);
-int 	bottoms(int keycode, t_game *game);
-void    the_3dview(t_game *game);
+void	init_game(t_game *game);
+void	my_mlx_pixel_put(t_game *game, int x, int y, int color);
+void	the_3dview(t_game *game);
 void	*ft_malloc(unsigned int size, int flag);
-int		game_gun(t_game *game);
-void    load_gun_sprite(t_game *game);
-int		mouse_move_hook(int x, int y, t_game *game);
+void	load_gun_sprite(t_game *game);
 void	draw_minimap(t_game *game);
 void	init_player_direction(t_game *game, char dir);
+int		close_window(t_game *game);
+int		render_map(t_game *game);
+int		bottoms(int keycode, t_game *game);
+int		game_gun(t_game *game);
+int		mouse_move_hook(int x, int y, t_game *game);
 
 #endif

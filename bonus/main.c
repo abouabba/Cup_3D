@@ -1,8 +1,21 @@
- #include "cub.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlamlaik <rlamlaik@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025-10-21 05:15:23 by rlamlaik          #+#    #+#             */
+/*   Updated: 2025-10-21 05:15:23 by rlamlaik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "cub.h"
 
 void	is_valid_texture(t_game *game)
 {
-	if (game->no != 1 || game->so != 1 || game->we != 1 || game->ea != 1 || game->f != 1 || game->c != 1)
+	if (game->no != 1 || game->so != 1 || game->we != 1 \
+	|| game->ea != 1 || game->f != 1 || game->c != 1)
 	{
 		printf("[%d], [%d], [%d], [%d], [%d], [%d], \n", game->no, game->so, game->we, game->ea, game->f, game->c);
 		print_error("Invalid texture");
@@ -21,17 +34,19 @@ t_txtu	init_txtu(t_game *game, char *file)
 		printf("wrong access: |%s|\n", file);
 		exit(1);
 	}
-	txtu.txture_p = mlx_xpm_file_to_image(game->helper->addr, file, &txtu.width , &txtu.height);
-	if  (!txtu.txture_p )
+	txtu.txture_p = mlx_xpm_file_to_image(\
+	game->helper->addr, file, &txtu.width, &txtu.height);
+	if (!txtu.txture_p)
 	{
 		printf("texttttuer error \n");
 		exit(1);
 	}
-	txtu.data_add =  mlx_get_data_addr(txtu.txture_p, &txtu.bbp, &txtu.line_len, &txtu.endian);
-	return txtu;
+	txtu.data_add = mlx_get_data_addr \
+	(txtu.txture_p, &txtu.bbp, &txtu.line_len, &txtu.endian);
+	return (txtu);
 }
 
-void hookshandeling(t_game *game)
+void	hookshandeling(t_game *game)
 {
 	is_valid_texture(game);
 	finalize_map(game);
@@ -45,7 +60,7 @@ void hookshandeling(t_game *game)
 	load_gun_sprite(game);
 	init_player_direction(game, game->player.direction);
 	mlx_hook(game->helper->win, 17, 0, close_window, game);
-	mlx_loop_hook(game->helper->mlx,&render_map, game);
+	mlx_loop_hook(game->helper->mlx, &render_map, game);
 	mlx_hook(game->helper->win, 6, 1L << 6, mouse_move_hook, game);
 	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_loop(game->helper->mlx);
@@ -79,4 +94,3 @@ int	main(int ac, char **av)
 	close(fd);
 	return (hookshandeling(game), 0);
 }
-
