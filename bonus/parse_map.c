@@ -6,7 +6,7 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 01:55:13 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/17 22:18:13 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:33:58 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,6 @@ void	finalize_map(t_game *game)
 	game->map_height = get_map_height(game->map_lines);
 	game->map_width = get_max_map_width(game->map_lines);
 	game->map = ft_malloc(sizeof(char *) * (game->map_height + 1), 1);
-	if (!game->map)
-	{
-		perror("Map allocation failed");
-		ft_malloc(1, 0);
-		exit(1);
-		return ;
-	}
 	(1) && (current = game->map_lines, i = 0);
 	while (current)
 	{

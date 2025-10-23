@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlamlaik <rlamlaik@student.42.fr>          #+#  +:+       +#+        */
+/*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025-10-21 05:15:23 by rlamlaik          #+#    #+#             */
-/*   Updated: 2025-10-21 05:15:23 by rlamlaik         ###   ########.fr       */
+/*   Created: 2025/10/21 05:15:23 by rlamlaik          #+#    #+#             */
+/*   Updated: 2025/10/23 11:56:45 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,19 @@ t_txtu	init_txtu(t_game *game, char *file)
 	return (txtu);
 }
 
-int closer(t_game *game)
+int	closer(t_game *game)
 {
 	(void)game;
 	exit(1);
 	return (1);
 }
+
 void	hookshandeling(t_game *game)
 {
 	is_valid_texture(game);
 	finalize_map(game);
 	validate_map(game);
 	init_game(game);
-
 	game->txtu[0] = init_txtu(game, game->textures.east);
 	game->txtu[1] = init_txtu(game, game->textures.north);
 	game->txtu[2] = init_txtu(game, game->textures.south);
@@ -72,18 +72,12 @@ void	hookshandeling(t_game *game)
 	mlx_loop(game->helper->mlx);
 }
 
-void ff()
-{
-	system("leaks  cub3d");
-}
-
 int	main(int ac, char **av)
 {
 	t_game	*game;
 	int		fd;
 	char	*line;
 
-	atexit(ff);
 	check_argument(ac, av);
 	game = ft_malloc(sizeof(t_game), 1);
 	if (!game)

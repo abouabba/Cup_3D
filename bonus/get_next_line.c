@@ -6,12 +6,11 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 15:42:40 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/18 15:42:53 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:20:45 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
-
 
 char	*check_read(int fd, char *buffer)
 {

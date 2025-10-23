@@ -6,60 +6,11 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 15:40:00 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/18 16:03:08 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:57:41 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
-
-int	invalid_rgb(int r, int g, int b)
-{
-	return (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255);
-}
-
-void	free_split(char **arry)
-{
-	int	i;
-
-	i = 0;
-	while (arry[i])
-	{
-		// free(arry[i]);
-		i++;
-	}
-	// free(arry);
-}
-
-int	is_digit_str(char *s)
-{
-	while (*s)
-	{
-		if (!ft_isdigit(*s))
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
-static void	check_commas(char *line)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (line[i])
-	{
-		if (line[i] == ',')
-			count++;
-		i++;
-	}
-	if (count != 2)
-	{
-		perror("Error\n<---- Invalid color format1 ---->");
-		exit(1);
-	}
-}
 
 static void	check_split(char **split)
 {
@@ -71,7 +22,6 @@ static void	check_split(char **split)
 	if (i != 3)
 	{
 		perror("Error\n<---- Invalid color format3 ---->");
-		// ft_malloc(0, 0);
 		exit(1);
 	}
 }
@@ -82,7 +32,6 @@ static void	validate_rgb(char **split, int r, int g, int b)
 		|| !is_digit_str(split[0]) || !is_digit_str(split[1])
 		|| !is_digit_str(split[2]))
 	{
-		// ft_malloc(0, 0);
 		print_error("Error: RGB values must contain only digits");
 	}
 	if (invalid_rgb(r, g, b))
@@ -117,7 +66,6 @@ int	parse_color(char *line)
 	if (split[2][len - 1] == '\n')
 		split[2][len - 1] = '\0';
 	validate_rgb(split, r, g, b);
-	// free_split(split);
 	return ((r << 16) | (g << 8) | b);
 }
 

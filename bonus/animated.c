@@ -6,17 +6,14 @@
 /*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 12:04:16 by abouabba          #+#    #+#             */
-/*   Updated: 2025/10/18 15:32:16 by abouabba         ###   ########.fr       */
+/*   Updated: 2025/10/23 11:42:52 by abouabba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub.h"
 
-void	load_gun_sprite(t_game *game)
+void	init_gun_files(char **files)
 {
-	int		i;
-	char	*files[17];
-
 	files[0] = "textures/animat/1.xpm";
 	files[1] = "textures/animat/2.xpm";
 	files[2] = "textures/animat/3.xpm";
@@ -34,6 +31,14 @@ void	load_gun_sprite(t_game *game)
 	files[14] = "textures/animat/15.xpm";
 	files[15] = "textures/animat/16.xpm";
 	files[16] = "textures/animat/17.xpm";
+}
+
+void	load_gun_sprite(t_game *game)
+{
+	int		i;
+	char	*files[17];
+
+	init_gun_files(files);
 	i = 0;
 	while (i < 17)
 	{
@@ -41,7 +46,7 @@ void	load_gun_sprite(t_game *game)
 				&game->gun[i].width, &game->gun[i].height);
 		if (!game->gun[i].img)
 		{
-			ft_malloc(0,0);
+			ft_malloc(0, 0);
 			printf("Error: failed to load %s\n", files[i]);
 			exit(1);
 		}
@@ -49,7 +54,6 @@ void	load_gun_sprite(t_game *game)
 	}
 	game->frame = 0;
 }
-
 
 void	draw_gun(t_game *game)
 {

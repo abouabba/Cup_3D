@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 SRCS = check_args.c config_parser.c ft_split.c get_next_line.c \
        init.c main.c map_parser.c parse_map.c parser.c utils_2.c utils.c \
 	   validate_map.c  mlx.c rays.c bottoms.c mouse_move.c minimap.c animated.c ft_malloc.c \
-	   draw_f_c.c rayshelper.c
+	   draw_f_c.c rayshelper.c minimap_helper.c parse_helper.c
 
 OBJS = $(SRCS:.c=.o)
 

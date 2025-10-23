@@ -1,50 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abouabba <abouabba@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/23 11:35:58 by abouabba          #+#    #+#             */
+/*   Updated: 2025/10/23 11:58:29 by abouabba         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub.h"
-
-size_t	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*s2;
-
-	i = 0;
-	s2 = ft_malloc((ft_strlen(s1) + 1) * (sizeof(char)), 1);
-	if (!s2)
-		return (NULL);
-	while (s1[i])
-	{
-		s2[i] = s1[i];
-		i++;
-	}
-	s2[i] = '\0';
-	return (s2);
-}
-
-char	*ft_strchr(char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	while (s[i])
-	{
-		if (s[i] == (char)c)
-			return ((char *)s + i);
-		i++;
-	}
-	if ((char)c == '\0')
-		return ((char *)s + i);
-	return (NULL);
-}
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -61,7 +27,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	s_everyone = ft_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
 	if (!s_everyone)
 	{
-		// free(s1);
 		return (NULL);
 	}
 	while (s1[i])
@@ -72,7 +37,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		s_everyone[i++] = s2[j++];
 	s_everyone[i] = '\0';
-	// free(s1);
 	return (s_everyone);
 }
 
@@ -84,7 +48,7 @@ int	ft_isdigit(int c)
 int	ft_overflow(int sing)
 {
 	if (sing == 1)
-		return (-1);   
+		return (-1);
 	return (0);
 }
 
