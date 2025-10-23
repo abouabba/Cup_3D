@@ -1,0 +1,89 @@
+animated.c: Error!
+Error: SPC_AFTER_OPERATOR   (line:  44, col:  24):	missing space after operator
+Error: TOO_MANY_LINES       (line:  51, col:   1):	Function has more than 25 lines
+Error: CONSECUTIVE_NEWLINES (line:  53, col:   1):	Consecutive newlines
+bottoms.c: OK!
+check_args.c: OK!
+config_parser.c: OK!
+cub.h: Error!
+Error: CONSECUTIVE_NEWLINES (line:  25, col:   1):	Consecutive newlines
+Error: PREPROC_CONSTANT     (line:  30, col:  19):	Preprocessor statement must only contain constant defines
+Error: CONSECUTIVE_NEWLINES (line:  76, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line:  77, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line:  78, col:   1):	Consecutive newlines
+Error: SPACE_REPLACE_TAB    (line:  92, col:   8):	Found space when expecting tab
+Error: SPACE_REPLACE_TAB    (line:  93, col:   8):	Found space when expecting tab
+Error: SPACE_REPLACE_TAB    (line:  94, col:   8):	Found space when expecting tab
+Error: SPACE_REPLACE_TAB    (line:  95, col:   8):	Found space when expecting tab
+Error: SPACE_REPLACE_TAB    (line:  96, col:  11):	Found space when expecting tab
+Error: MISALIGNED_VAR_DECL  (line:  96, col:  12):	Misaligned variable declaration
+Error: BRACE_NEWLINE        (line:  99, col:  27):	Expected newline before brace
+Error: BRACE_NEWLINE        (line: 106, col:  25):	Expected newline before brace
+Error: MISALIGNED_VAR_DECL  (line: 111, col:  13):	Misaligned variable declaration
+Error: MISALIGNED_VAR_DECL  (line: 112, col:  13):	Misaligned variable declaration
+Error: MISALIGNED_VAR_DECL  (line: 113, col:  13):	Misaligned variable declaration
+Error: BRACE_NEWLINE        (line: 116, col:  23):	Expected newline before brace
+Error: CONSECUTIVE_NEWLINES (line: 149, col:   1):	Consecutive newlines
+Error: SPC_BEFORE_NL        (line: 157, col:  22):	Space before newline
+Error: MIXED_SPACE_TAB      (line: 163, col:  11):	Mixed spaces and tabs
+Error: SPACE_REPLACE_TAB    (line: 163, col:  11):	Found space when expecting tab
+Error: CONSECUTIVE_NEWLINES (line: 204, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line: 234, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line: 250, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line: 251, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line: 276, col:   1):	Consecutive newlines
+Error: CONSECUTIVE_NEWLINES (line: 277, col:   1):	Consecutive newlines
+draw_f_c.c: OK!
+ft_malloc.c: OK!
+ft_split.c: OK!
+get_next_line.c: Error!
+Error: CONSECUTIVE_NEWLINES (line:  15, col:   1):	Consecutive newlines
+init.c: OK!
+main.c: Error!
+Error: SPACE_BEFORE_FUNC    (line:  49, col:   4):	space before function name
+Error: NEWLINE_PRECEDES_FUNC (line:  55, col:   1):	Functions must be separated by a newline
+Error: EMPTY_LINE_FUNCTION  (line:  61, col:   1):	Empty line in function
+Error: SPACE_BEFORE_FUNC    (line:  75, col:   5):	space before function name
+Error: NO_ARGS_VOID         (line:  75, col:   9):	Empty function argument requires void
+Error: TOO_MANY_FUNCS       (line:  80, col:   1):	Too many functions in file
+Error: TOO_MANY_LINES       (line: 108, col:   1):	Function has more than 25 lines
+map_parser.c: OK!
+minimap.c: Error!
+Error: CONSECUTIVE_NEWLINES (line:  13, col:   1):	Consecutive newlines
+Error: TOO_MANY_ARGS        (line:  16, col:  74):	Function has more than 4 arguments
+Error: TOO_MANY_VARS_FUNC   (line:  23, col:   1):	Too many variables declarations in a function
+Error: TOO_MANY_LINES       (line:  44, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_VARS_FUNC   (line:  53, col:   1):	Too many variables declarations in a function
+Error: LINE_TOO_LONG        (line:  59, col:  82):	line too long
+Error: SPACE_AFTER_KW       (line:  63, col:  17):	Missing space after keyword
+Error: TOO_MANY_LINES       (line:  74, col:   1):	Function has more than 25 lines
+Error: BRACE_SHOULD_EOL     (line:  89, col:   1):	Expected newline after brace
+mlx.c: OK!
+mouse_move.c: OK!
+parse_map.c: Error!
+Error: TOO_MANY_LINES       (line:  87, col:   1):	Function has more than 25 lines
+parser.c: Error!
+Error: WRONG_SCOPE_COMMENT  (line:  27, col:   9):	Comment is invalid in this scope
+Error: WRONG_SCOPE_COMMENT  (line:  30, col:   5):	Comment is invalid in this scope
+Error: WRONG_SCOPE_COMMENT  (line:  74, col:   9):	Comment is invalid in this scope
+Error: TOO_MANY_FUNCS       (line:  79, col:   1):	Too many functions in file
+Error: WRONG_SCOPE_COMMENT  (line:  85, col:   9):	Comment is invalid in this scope
+Error: TOO_MANY_FUNCS       (line:  95, col:   1):	Too many functions in file
+Error: WRONG_SCOPE_COMMENT  (line: 120, col:   5):	Comment is invalid in this scope
+Error: TOO_MANY_FUNCS       (line: 124, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 147, col:   1):	Too many functions in file
+rays.c: OK!
+rayshelper.c: OK!
+utils.c: Error!
+Error: INVALID_HEADER       (line:   1, col:   1):	Missing or invalid 42 header
+Error: WRONG_SCOPE_COMMENT  (line:  64, col:   9):	Comment is invalid in this scope
+Error: WRONG_SCOPE_COMMENT  (line:  75, col:   5):	Comment is invalid in this scope
+Error: TOO_MANY_LINES       (line:  77, col:   1):	Function has more than 25 lines
+Error: TOO_MANY_FUNCS       (line:  84, col:   1):	Too many functions in file
+Error: CONSECUTIVE_SPC      (line:  87, col:  21):	Two or more consecutives spaces
+Error: SPC_BEFORE_NL        (line:  87, col:  21):	Space before newline
+Error: TOO_MANY_FUNCS       (line:  91, col:   1):	Too many functions in file
+Error: TOO_MANY_FUNCS       (line: 119, col:   1):	Too many functions in file
+utils_2.c: Error!
+Error: INVALID_HEADER       (line:   1, col:   1):	Missing or invalid 42 header
+validate_map.c: OK!

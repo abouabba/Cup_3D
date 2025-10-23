@@ -69,7 +69,6 @@ void	validate_map(t_game *game)
 			c = game->map[y][x];
 			if (!is_valid_char(c))
 			{
-				// ft_malloc(1337, 0);
 				perror("Error: Invalid character");
 				exit(EXIT_FAILURE);
 			}

@@ -54,18 +54,18 @@ static int	counter_word(char const *s, char dilimiter)
 	return (j);
 }
 
-// static void	ft_free(char **arry)
-// {
-// 	int	i;
+static void	ft_free(char **arry)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (arry[i])
-// 	{
-// 		// free (arry[i]);
-// 		i++;
-// 	}
-// 	// free (arry);
-// }
+	i = 0;
+	while (arry[i])
+	{
+		free (arry[i]);
+		i++;
+	}
+	free (arry);
+}
 
 static char	**split(const char *s, char **big_arry, char c)
 {
@@ -86,7 +86,7 @@ static char	**split(const char *s, char **big_arry, char c)
 		{
 			big_arry[start] = ft_substr(s, i, len);
 			if (!big_arry[start++])
-				return ( NULL);//ft_free (big_arry),
+				return (ft_free (big_arry), NULL);
 		}
 		i += len;
 	}

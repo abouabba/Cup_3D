@@ -62,20 +62,8 @@ void	move_player(t_game *game, double dx, double dy)
 		(1) && (game->player.y = mov.new_y, game->player.x = mov.new_x);
 }
 
-int	bottoms(int keycode, t_game *game)
+int	bottomshelper(int keycode, t_game *game, double dx, double dy)
 {
-	double	dx;
-	double	dy;
-
-	(1) && (dy = 0.0, dx = 0.0);
-	if (keycode == LEFT)
-		game->angle -= ROTATION_SPEED;
-	else if (keycode == RIGHT)
-		game->angle += ROTATION_SPEED;
-	if (game->angle < 0)
-		game->angle += 2.0 * M_PI;
-	if (game->angle >= 2.0 * M_PI)
-		game->angle -= 2.0 * M_PI;
 	if (keycode == KEY_W)
 	{
 		dx = cos(game->angle);
@@ -95,10 +83,25 @@ int	bottoms(int keycode, t_game *game)
 	if (keycode == 49)
 		game->frame = 1;
 	if (keycode == 53)
-	{
-		// ft_malloc(0, 0);
 		exit(0);
-	}
+	return (1);
+}
+
+int	bottoms(int keycode, t_game *game)
+{
+	double	dx;
+	double	dy;
+
+	(1) && (dy = 0.0, dx = 0.0);
+	if (keycode == LEFT)
+		game->angle -= ROTATION_SPEED;
+	else if (keycode == RIGHT)
+		game->angle += ROTATION_SPEED;
+	if (game->angle < 0)
+		game->angle += 2.0 * M_PI;
+	if (game->angle >= 2.0 * M_PI)
+		game->angle -= 2.0 * M_PI;
+	bottomshelper(keycode, game, dx, dy);
 	move_player(game, dx, dy);
 	mlx_clear_window(game->helper->mlx, game->helper->win);
 	return (game_gun(game), 0);

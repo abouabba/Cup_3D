@@ -22,6 +22,7 @@
 # include "mlx.h"
 # include <math.h>
 
+
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42 
 # endif
@@ -215,51 +216,63 @@ typedef struct s_texthelper
 }				t_texthelper;
 
 // ---- Function prototypes ----
-void	check_argument(int ac, char **av);
-void	init_game_struct(t_game *game);
-int		is_config_line(char *line);
-int		is_empty_line(char *line);
-void	parse_line(t_game *game, char *line);
-void	parse_config_line(t_game *game, char *line);
-void	save_map_line(t_game *game, char *line);
-int		in_valid_ber_file(char *file_name);
-void	parse_config_line(t_game *game, char *line);
-int		parse_color(char *line);
-void	finalize_map(t_game *game);
-void	print_map(char **map);
-void	validate_map(t_game *game);
-void	print_error(const char *message);
+void		check_argument(int ac, char **av);
+void		init_game_struct(t_game *game);
+int			is_config_line(char *line);
+int			is_empty_line(char *line);
+void		parse_line(t_game *game, char *line);
+void		parse_config_line(t_game *game, char *line);
+void		save_map_line(t_game *game, char *line);
+int			in_valid_ber_file(char *file_name);
+void		parse_config_line(t_game *game, char *line);
+int			parse_color(char *line);
+void		finalize_map(t_game *game);
+void		print_map(char **map);
+void		validate_map(t_game *game);
+void		print_error(const char *message);
 
 
 // helper
-char	*ft_strdup(const char *s);
-char	*get_next_line(int fd); // must be included from your GNL
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
-int		ft_atoi(const char	*str);
-int		ft_isdigit(int c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	**ft_split(char const *s, char c);
-void	*ft_memset(void *b, int c, size_t len);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char		*ft_strdup(const char *s);
+char		*get_next_line(int fd); // must be included from your GNL
+size_t		ft_strlen(const char *s);
+char		*ft_strdup(const char *s1);
+char		*ft_strjoin(char *s1, char *s2);
+char		*ft_strchr(char *s, int c);
+int			ft_atoi(const char	*str);
+int			ft_isdigit(int c);
+char		*ft_substr(char const *s, unsigned int start, size_t len);
+char		**ft_split(char const *s, char c);
+void		*ft_memset(void *b, int c, size_t len);
+void		*ft_memcpy(void *dst, const void *src, size_t n);
+int			ft_strncmp(const char *s1, const char *s2, size_t n);
 
 
 
 //reyn's part
-void	init_game(t_game *game);
-void	my_mlx_pixel_put(t_game *game, int x, int y, int color);
-void	the_3dview(t_game *game);
-void	*ft_malloc(unsigned int size, int flag);
-void	load_gun_sprite(t_game *game);
-void	draw_minimap(t_game *game);
-void	init_player_direction(t_game *game, char dir);
-int		close_window(t_game *game);
-int		render_map(t_game *game);
-int		bottoms(int keycode, t_game *game);
-int		game_gun(t_game *game);
-int		mouse_move_hook(int x, int y, t_game *game);
+void		init_game(t_game *game);
+void		my_mlx_pixel_put(t_game *game, int x, int y, int color);
+void		the_3dview(t_game *game);
+void		*ft_malloc(unsigned int size, int flag);
+void		load_gun_sprite(t_game *game);
+void		draw_minimap(t_game *game);
+void		init_player_direction(t_game *game, char dir);
+int			render_map(t_game *game);
+int			bottoms(int keycode, t_game *game);
+int			game_gun(t_game *game);
+int			mouse_move_hook(int x, int y, t_game *game);
+t_casting	*loop_helper(t_game *game, t_ray *ray, t_casting *holder);
+void		move_side_dda(t_ray *ray, t_casting *holder);
+double		cast_dda(t_game *game, t_ray *ray, t_casting *holder);
+double		normalize_angle(double angle);
+t_ray		prepare_vars(t_ray ray, t_game *game, int i_loop);
+void		texture_loop(t_loopvars*vars, t_game*game, \
+t_ray ray, t_texthelper*helper);
+void		texture_pass(t_game *game, int x, t_ray ray, t_loopvars *vars);
+void		helper_draw_ceilling(t_loopvars *vars);
+void		draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars);
+double		normalize_angle(double angle);
+
+
 
 #endif
