@@ -24,10 +24,10 @@ void	free_split(char **arry)
 	i = 0;
 	while (arry[i])
 	{
-		free(arry[i]);
+		// free(arry[i]);
 		i++;
 	}
-	free(arry);
+	// free(arry);
 }
 
 int	is_digit_str(char *s)
@@ -71,7 +71,7 @@ static void	check_split(char **split)
 	if (i != 3)
 	{
 		perror("Error\n<---- Invalid color format3 ---->");
-		free_split(split);
+		// ft_malloc(0, 0);
 		exit(1);
 	}
 }
@@ -82,13 +82,12 @@ static void	validate_rgb(char **split, int r, int g, int b)
 		|| !is_digit_str(split[0]) || !is_digit_str(split[1])
 		|| !is_digit_str(split[2]))
 	{
-		free_split(split);
+		// ft_malloc(0, 0);
 		print_error("Error: RGB values must contain only digits");
 	}
 	if (invalid_rgb(r, g, b))
 	{
 		perror("Error\n<---- Invalid color format4 ---->");
-		free_split(split);
 		exit(1);
 	}
 }
@@ -118,7 +117,7 @@ int	parse_color(char *line)
 	if (split[2][len - 1] == '\n')
 		split[2][len - 1] = '\0';
 	validate_rgb(split, r, g, b);
-	free_split(split);
+	// free_split(split);
 	return ((r << 16) | (g << 8) | b);
 }
 

@@ -29,12 +29,12 @@ void	check_argument(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		printf("Error\nInvalid number of arguments\n");
+		write(2, "Error\nInvalid number of arguments\n", 34);
 		exit(1);
 	}
 	if (!in_valid_ber_file(av[1]))
 	{
-		printf("Error\n<----!Invalid file extension---->\n");
+		write(2, "Error\nInvalid number of arguments\n", 34);
 		exit(1);
 	}
 }

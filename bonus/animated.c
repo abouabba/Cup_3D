@@ -41,6 +41,7 @@ void	load_gun_sprite(t_game *game)
 				&game->gun[i].width, &game->gun[i].height);
 		if (!game->gun[i].img)
 		{
+			ft_malloc(0,0);
 			printf("Error: failed to load %s\n", files[i]);
 			exit(1);
 		}
@@ -48,6 +49,7 @@ void	load_gun_sprite(t_game *game)
 	}
 	game->frame = 0;
 }
+
 
 void	draw_gun(t_game *game)
 {

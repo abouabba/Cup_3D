@@ -17,8 +17,9 @@ void	is_valid_texture(t_game *game)
 	if (game->no != 1 || game->so != 1 || game->we != 1 \
 	|| game->ea != 1 || game->f != 1 || game->c != 1)
 	{
-		printf("[%d], [%d], [%d], [%d], [%d], [%d], \n", game->no, game->so, game->we, game->ea, game->f, game->c);
-		print_error("Invalid texture");
+		perror("Invalid texture");
+		// ft_malloc(1337, 0);
+		exit(1);
 	}
 }
 
@@ -32,6 +33,7 @@ t_txtu	init_txtu(t_game *game, char *file)
 	if (access(file, F_OK))
 	{
 		printf("wrong access: |%s|\n", file);
+		// ft_malloc(0, 0);
 		exit(1);
 	}
 	txtu.txture_p = mlx_xpm_file_to_image(\
@@ -39,6 +41,7 @@ t_txtu	init_txtu(t_game *game, char *file)
 	if (!txtu.txture_p)
 	{
 		printf("texttttuer error \n");
+		// ft_malloc(0, 0);
 		exit(1);
 	}
 	txtu.data_add = mlx_get_data_addr \
@@ -60,10 +63,15 @@ void	hookshandeling(t_game *game)
 	load_gun_sprite(game);
 	init_player_direction(game, game->player.direction);
 	mlx_hook(game->helper->win, 17, 0, close_window, game);
-	mlx_loop_hook(game->helper->mlx, &render_map, game);
+	mlx_loop_hook(game->helper->mlx, &game_gun, game);
 	mlx_hook(game->helper->win, 6, 1L << 6, mouse_move_hook, game);
 	mlx_hook(game->helper->win, 2, 1, bottoms, game);
 	mlx_loop(game->helper->mlx);
+}
+
+void ff()
+{
+	system("leaks -q cub3d");
 }
 
 int	main(int ac, char **av)
@@ -72,6 +80,7 @@ int	main(int ac, char **av)
 	int		fd;
 	char	*line;
 
+	atexit(ff);
 	check_argument(ac, av);
 	game = ft_malloc(sizeof(t_game), 1);
 	if (!game)
@@ -84,13 +93,14 @@ int	main(int ac, char **av)
 	if (fd == -1)
 	{
 		perror("Error\n<----!Can't open file---->");
+		// ft_malloc(42, 0);
 		exit(1);
 	}
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		parse_line(game, line);
-		free(line);
+		line = get_next_line(fd);
 	}
-	close(fd);
-	return (hookshandeling(game), 0);
+	return (close(fd), hookshandeling(game), 0);
 }

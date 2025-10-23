@@ -52,7 +52,6 @@
 # define SOUTH_TEXTURE 2
 # define NORTH_TEXTURE 0
 # define DOOR_TEXTURE 4
-// # define DOOR_COLOR 0x6B4226 // brown if you want a solid color
 # define DOOR 'D'
 
 # define MINIMAP_SIZE 150
@@ -181,6 +180,14 @@ typedef struct s_game
 	int			frame;
 	int			flage;
 }				t_game;
+
+typedef struct s_mov
+{
+	double	new_x;
+	double	new_y;
+	int		map_y;
+	int		map_x;
+}				t_mov;
 
 typedef struct s_casting
 {

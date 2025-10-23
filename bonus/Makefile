@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRCS = check_args.c config_parser.c ft_split.c get_next_line.c \
        init.c main.c map_parser.c parse_map.c parser.c utils_2.c utils.c \
@@ -10,6 +10,12 @@ OBJS = $(SRCS:.c=.o)
 NAME = cub3d
 
 MLX_FLAG =  -lmlx -framework OpenGL -framework AppKit -o 
+
+
+
+
+
+
 
 all: $(NAME)
 

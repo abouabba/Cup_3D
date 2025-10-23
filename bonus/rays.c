@@ -15,6 +15,7 @@
 t_casting	*loop_helper(t_game *game, t_ray *ray, t_casting *holder)
 {
 	holder->hited = 0;
+	
 	while (!holder->hited)
 	{
 		if (holder->side_dist_x < holder->side_dist_y)
@@ -146,6 +147,11 @@ void	texture_pass(t_game *game, int x, t_ray ray, t_loopvars *vars)
 	t_texthelper	*helper;
 
 	helper = ft_malloc(sizeof(t_texthelper), 1);
+	if (!helper)
+	{
+		// ft_malloc(12, 0);
+		exit(write(2, "texthelper :Error initializing mlx\n", 24));
+	}
 	helper->tex_width = vars->texture->width;
 	helper->tex_height = vars->texture->height;
 	if (x < 0 || x >= SCREEN_WIDTH)
@@ -170,21 +176,8 @@ void	texture_pass(t_game *game, int x, t_ray ray, t_loopvars *vars)
 	texture_loop(vars, game, ray, helper);
 }
 
-void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars)
+void	helper_draw_ceilling(t_loopvars *vars)
 {
-	char	*addr;
-	int		stride;
-	int		bpp_bytes;
-	int		y;
-	int		yyx;
-
-	yyx = 0;
-	y = vars->draw_end + 1;
-	stride = game->helper->line_len;
-	bpp_bytes = game->helper->bpp / 8;
-	addr = game->helper->addr;
-	if (x < 0 || x >= SCREEN_WIDTH)
-		return ;
 	if (vars->draw_start < 0)
 		vars->draw_start = 0;
 	if (vars->draw_start > (SCREEN_HEIGHT + 1))
@@ -193,14 +186,33 @@ void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars)
 		vars->draw_end = -1;
 	if (vars->draw_end >= (SCREEN_HEIGHT + 1))
 		vars->draw_end = (SCREEN_HEIGHT + 1) - 1;
+}
+
+void	draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars)
+{
+	char	*addr;
+	int		stride;
+	int		bpp_bytes;
+	int		y;
+	int		yyx;
+
+	(1) && (yyx = 0, y = vars->draw_end + 1);
+	stride = game->helper->line_len;
+	bpp_bytes = game->helper->bpp / 8;
+	addr = game->helper->addr;
+	if (x < 0 || x >= SCREEN_WIDTH)
+		return ;
+	helper_draw_ceilling(vars);
 	while (yyx < vars->draw_start)
 	{
-		*(unsigned int *)(addr + yyx * stride + x * bpp_bytes) = game->ceiling_color;
+		*(unsigned int *) \
+		(addr + yyx * stride + x * bpp_bytes) = game->ceiling_color;
 		++yyx;
 	}
 	while (y < (SCREEN_HEIGHT))
 	{
-		*(unsigned int *)(addr + y * stride + x * bpp_bytes) = game->floor_color;
+		*(unsigned int *) \
+		(addr + y * stride + x * bpp_bytes) = game->floor_color;
 		y++;
 	}
 }
@@ -227,15 +239,11 @@ int	texture_side(t_ray ray)
 	return (index);
 }
 
-void	varsinit(t_loopvars *vars, double distance, t_casting *holder)
+void	varsinit(t_loopvars *vars, double distance)
 {
 	vars->line_height = (int)(TILE_SIZE * SCREEN_HEIGHT / distance);
 	vars->draw_start = -vars->line_height / 2 + SCREEN_HEIGHT / 2;
 	vars->draw_end = vars->line_height / 2 + SCREEN_HEIGHT / 2;
-	if (holder->side == 1)
-		vars->color = 0xAAAAAA;
-	else
-		vars->color = 0xFFFFFF;
 	if (vars->draw_start < 0)
 		vars->draw_start = 0;
 	if (vars->draw_end >= SCREEN_HEIGHT)
@@ -276,18 +284,22 @@ int	loophandeler(t_casting	*holder, t_game *game)
 	t_ray		ray;
 	int			texture_index;
 	t_loopvars	*vars;
-	double		distance;
 	double		dist;
 
 	vars = ft_malloc(sizeof(t_loopvars), 1);
+	if (!vars)
+	{
+		// ft_malloc(12, 0);
+		exit(write(2, "Error initializing mlx\n", 24));
+	}
 	i_loop = 0;
 	while (i_loop < SCREEN_WIDTH)
 	{
 		ray = prepare_vars(ray, game, i_loop);
 		dist = cast_dda(game, &ray, holder);
-		distance = dist * cos(ray.ray_angle - game->angle);
-		ray.perp_wall_dist = distance;
-		varsinit(vars, distance, holder);
+		dist = dist * cos(ray.ray_angle - game->angle);
+		ray.perp_wall_dist = dist;
+		varsinit(vars, dist);
 		texture_index = texture_side(ray);
 		game->ray = ray;
 		draw_floor_and_ceiling(game, i_loop, vars);
@@ -304,6 +316,11 @@ void	the_3dview(t_game *game)
 	t_casting	*holder;
 
 	holder = ft_malloc(sizeof(t_casting), 1);
+	if (!holder)
+	{
+		ft_malloc(12, 0);
+		exit(write(2, "Error initializing mlx\n", 24));
+	}
 	holder->hited = 0;
 	holder->side = 0;
 	holder->side_dist_x = 0;

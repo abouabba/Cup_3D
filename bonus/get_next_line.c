@@ -34,7 +34,7 @@ char	*check_read(int fd, char *buffer)
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
-	free(temp);
+	// free(temp);
 	return (buffer);
 }
 

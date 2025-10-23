@@ -61,7 +61,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	s_everyone = ft_malloc(ft_strlen(s1) + ft_strlen(s2) + 1, 1);
 	if (!s_everyone)
 	{
-		free(s1);
+		// free(s1);
 		return (NULL);
 	}
 	while (s1[i])
@@ -72,7 +72,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[j])
 		s_everyone[i++] = s2[j++];
 	s_everyone[i] = '\0';
-	return (free(s1), s_everyone);
+	// free(s1);
+	return (s_everyone);
 }
 
 int	ft_isdigit(int c)

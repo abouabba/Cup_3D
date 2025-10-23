@@ -64,13 +64,19 @@ void	finalize_map(t_game *game)
 	if (!game->map)
 	{
 		perror("Map allocation failed");
+		ft_malloc(1, 0);
+		exit(1);
 		return ;
 	}
-	current = game->map_lines;
-	i = 0;
+	(1) && (current = game->map_lines, i = 0);
 	while (current)
 	{
 		game->map[i] = ft_malloc(game->map_width + 1, 1);
+		if (!game->map[i])
+		{
+			perror ("game->map[i] : error");
+			exit(1);
+		}
 		ft_memset(game->map[i], ' ', game->map_width);
 		ft_memcpy(game->map[i], current->line, ft_strlen(current->line));
 		game->map[i][game->map_width] = '\0';
