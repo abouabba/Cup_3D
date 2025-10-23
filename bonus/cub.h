@@ -215,7 +215,6 @@ typedef struct s_texthelper
 
 }				t_texthelper;
 
-// ---- Function prototypes ----
 void		check_argument(int ac, char **av);
 void		init_game_struct(t_game *game);
 int			is_config_line(char *line);
@@ -230,11 +229,8 @@ void		finalize_map(t_game *game);
 void		print_map(char **map);
 void		validate_map(t_game *game);
 void		print_error(const char *message);
-
-
-// helper
 char		*ft_strdup(const char *s);
-char		*get_next_line(int fd); // must be included from your GNL
+char		*get_next_line(int fd);
 size_t		ft_strlen(const char *s);
 char		*ft_strdup(const char *s1);
 char		*ft_strjoin(char *s1, char *s2);
@@ -246,10 +242,6 @@ char		**ft_split(char const *s, char c);
 void		*ft_memset(void *b, int c, size_t len);
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
-
-
-
-//reyn's part
 void		init_game(t_game *game);
 void		my_mlx_pixel_put(t_game *game, int x, int y, int color);
 void		the_3dview(t_game *game);
@@ -272,7 +264,5 @@ void		texture_pass(t_game *game, int x, t_ray ray, t_loopvars *vars);
 void		helper_draw_ceilling(t_loopvars *vars);
 void		draw_floor_and_ceiling(t_game *game, int x, t_loopvars *vars);
 double		normalize_angle(double angle);
-
-
 
 #endif
